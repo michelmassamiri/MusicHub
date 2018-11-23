@@ -1,0 +1,8 @@
+#Webstorm
+./idea
+
+#NodeJS Jade
+views/
+node_modules/
+public/
+package-lock.json
