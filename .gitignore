@@ -1,0 +1,8 @@
+#WebStorm
+Back/.idea/
+
+#node_modules
+Back/node_modules/
+
+#Json package
+package-lock.json
