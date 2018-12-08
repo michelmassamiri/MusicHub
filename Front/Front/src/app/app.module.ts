@@ -7,6 +7,10 @@ import { HeaderComponent } from './components/header/header.component';
 import { FooterComponent } from './components/footer/footer.component';
 import { AppRoutingModule } from './app-routing.module';
 
+import {SocialLoginModule, AuthServiceConfig} from 'angular-6-social-login';
+import {getAuthServiceConfigs} from "./socialloginConfig";
+import {HttpClientModule} from "@angular/common/http";
+
 @NgModule({
   declarations: [
     AppComponent,
@@ -16,9 +20,16 @@ import { AppRoutingModule } from './app-routing.module';
   ],
   imports: [
     BrowserModule,
-    AppRoutingModule
+    AppRoutingModule,
+    SocialLoginModule,
+    HttpClientModule
   ],
-  providers: [],
+  providers: [
+    {
+    provide: AuthServiceConfig,
+    useFactory: getAuthServiceConfigs
+    },
+  ],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
