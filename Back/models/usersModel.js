@@ -1,4 +1,4 @@
-var mongoose = require('mongoose');
+const mongoose = require('mongoose');
 
 /* Setup the schema */
 const userSchema = new mongoose.Schema({
@@ -17,23 +17,34 @@ const userSchema = new mongoose.Schema({
     },
     socialMediasToken: {
         type: Map,
-        of: String,
-        select: false
+        of: String
     }
 });
 
-userSchema.statics.upsertSocialMediaUser = function(accessToken, refreshToken, profile, cb) {
+userSchema.options.toJSON = {
+    transform: function(doc, ret) {
+        ret.id = ret._id;
+        delete ret._id;
+        delete ret.__v;
+        delete ret.id;
+    }
+};
+
+userSchema.statics.upsertSocialMediaUser = function(userToVerify, cb) {
     let that = this;
     return this.findOne({
-        'socialMediasToken.google': accessToken
+        'socialMediasToken.google': userToVerify.socialMediasToken.google
     }, function(err, user) {
         // no user was found, lets create a new one
         if (!user) {
             let newUser = new that({
-                firstname: profile.name,
-                email: profile.emails[0].value,
+                firstname: userToVerify.firstname,
+                lastname: userToVerify.lastname,
+                email: userToVerify.email,
                 socialMediasToken: {
-                    google: accessToken
+                    google: userToVerify.socialMediasToken.google,
+                    spotify: '',
+                    deezer: ''
                 }
             });
 
@@ -49,7 +60,7 @@ userSchema.statics.upsertSocialMediaUser = function(accessToken, refreshToken, p
     });
 };
 
-var User = module.exports = mongoose.model('user', userSchema);
+const User = module.exports = mongoose.model('User', userSchema);
 module.exports.get = function (callback, limit) {
     User.find(callback).limit(limit);
 };
