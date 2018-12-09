@@ -1,19 +1,23 @@
-var createError = require('http-errors');
-var express = require('express');
-var path = require('path');
-var cookieParser = require('cookie-parser');
-var logger = require('morgan');
-var bodyParser = require('body-parser');
-var mongoose = require('mongoose');
-var cors = require('cors');
+const createError = require('http-errors');
+const express = require('express');
+const path = require('path');
+const cookieParser = require('cookie-parser');
+const logger = require('morgan');
+const bodyParser = require('body-parser');
+const mongoose = require('mongoose');
+const expressJwt = require('express-jwt');
+const cors = require('cors');
+const corsOptions = {
+    exposedHeaders: 'generatedToken'
+};
+const indexRouter = require('./routes/index');
+const usersRouter = require('./routes/users');
 
-var indexRouter = require('./routes/index');
-var usersRouter = require('./routes/users');
-
-var app = express();
+const app = express();
 
 app.use(logger('dev'));
-app.use(cors());
+app.use(cors(corsOptions));
+app.use(expressJwt({secret: 'musicHub-app-shared-secret'}).unless({path: ['/auth/google']}));
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
@@ -24,7 +28,7 @@ app.use(bodyParser.urlencoded({
 }));
 app.use(bodyParser.json());
 mongoose.connect('mongodb://localhost:27017/MusicHub', {useNewUrlParser: true});
-var db = mongoose.connection;
+const db = mongoose.connection;
 
 app.use('/auth', indexRouter);
 app.use('/users', usersRouter);
@@ -41,8 +45,7 @@ app.use(function(err, req, res, next) {
   res.locals.error = req.app.get('env') === 'development' ? err : {};
 
   // render the error page
-  res.status(err.status || 500);
-  res.render('error');
+  res.status(err.status || 500).send({error: err});
 });
 
 module.exports = app;
