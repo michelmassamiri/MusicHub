@@ -1,24 +1,40 @@
-// import user model
-const oath2ClientConfig = require('../oauth2config/oauth2client');
 User = require('../models/usersModel');
+const socialsIdTokens = require('../oauth2config/oauth2client');
 
+const jwt = require('jsonwebtoken');
 const {OAuth2Client} = require('google-auth-library');
-const client = new OAuth2Client(oath2ClientConfig.googleIdClient);
+const client = new OAuth2Client(socialsIdTokens.socialsIdClient.googleIdClient);
 
-exports.verifyGoogleToken = async function (req, res, next) {
-    const token = req.get('Authorization');
+async function verifyGoogleToken (token) {
     const ticket = await client.verifyIdToken({
         idToken: token,
-        audience: '490320770076-pgociv0l4kfqvtufupkengo5clh8ha62.apps.googleusercontent.com',
+        audience: socialsIdTokens.socialsIdClient.googleIdClient,
     });
 
-    const payload = ticket.getPayload();
-    const userid = payload['sub'];
-    // TODO :
-    /**
-     * 1 - Verify if UserID is in the DataBase
-     * 2 - if the UserID is in the the DataBase, genereate a JWT Token to Angular.
-     * 3 - if not, create a new User in the DataBase and generate a new JWT Token
-     */
-    res.send(userid);
+    return ticket.getPayload();
+}
+
+exports.signInWithGoogle = function (req, res, next) {
+    const token = req.get('Authorization-google');
+    verifyGoogleToken(token)
+        .then((payload)=> {
+            const user = {
+                firstname: payload['given_name'],
+                lastname:  payload['family_name'],
+                email: payload['email'],
+                socialMediasToken: {
+                    google: payload['sub'],
+                    spotify: '',
+                    deezer: ''
+                }
+            };
+
+            User.upsertSocialMediaUser(user, function (err, savedUser) {
+                const genToken = jwt.sign({userID: savedUser.id},
+                    'musicHub-app-shared-secret', {expiresIn: '2h'});
+                res.header('generatedToken', genToken);
+                res.json(savedUser);
+            });
+        })
+        .catch(console.error);
 };
