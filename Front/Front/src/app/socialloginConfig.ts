@@ -8,3 +8,7 @@ export function getAuthServiceConfigs() {
 
   return config;
 }
+
+export function tokenGetter() {
+  return localStorage.getItem('access_token');
+}
