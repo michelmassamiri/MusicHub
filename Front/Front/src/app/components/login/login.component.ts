@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import {AuthService, GoogleLoginProvider} from 'angular-6-social-login';
 import {LoginService} from "../../services/login.service";
 import {isNullOrUndefined} from "util";
+import {Router} from "@angular/router";
 
 @Component({
   selector: 'app-login',
@@ -10,8 +11,11 @@ import {isNullOrUndefined} from "util";
 })
 export class LoginComponent implements OnInit {
 
-  constructor(private socialAuthService: AuthService,
-              private loginService: LoginService) {}
+  constructor(
+    private socialAuthService: AuthService,
+    private loginService: LoginService,
+    private router: Router
+  ) {}
 
   ngOnInit() {
   }
@@ -24,9 +28,8 @@ export class LoginComponent implements OnInit {
           .subscribe(
             resp => {
               if(isNullOrUndefined(resp)) return;
-
               console.log(resp.body);
-              // redirect UserPlaylistHomePage
+              this.router.navigate(['']);
             },
             error => {
               console.error(error);
