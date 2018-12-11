@@ -1,7 +1,10 @@
 import { Injectable } from '@angular/core';
 import {HttpClient, HttpErrorResponse, HttpHeaders, HttpResponse} from '@angular/common/http';
 import {catchError, tap} from "rxjs/internal/operators";
-import {Observable, of, throwError} from "rxjs/index";
+import {BehaviorSubject, Observable, of, throwError} from "rxjs/index";
+
+import {AUTH_GOOGLE_URI, MUSICHUB_API} from "../../consts";
+import {User} from "../entity/User";
 
 let headers = new HttpHeaders({
   'Content-Type': 'application/json'
@@ -11,18 +14,26 @@ let headers = new HttpHeaders({
   providedIn: 'root',
 })
 export class LoginService {
-  private url = 'http://localhost:3000/auth/google';
+  private googleAuthUrl = MUSICHUB_API + AUTH_GOOGLE_URI;
+  private currentUserSubject: BehaviorSubject<User>;
+  private currentUser: Observable<User>;
 
-  constructor(private http: HttpClient) { }
+  constructor(private http: HttpClient) {
+    this.currentUserSubject = new BehaviorSubject<User>(JSON.parse(localStorage.getItem('currentUser')));
+    this.currentUser = this.currentUserSubject.asObservable();
+  }
 
   signInWithGoolge(token: string): Observable<HttpResponse<any>> {
     headers = headers.append('Authorization-google', token);
 
-    return this.http.post<any>(this.url, null, {headers, observe: 'response'})
+    return this.http.post<any>(this.googleAuthUrl, null, {headers, observe: 'response'})
       .pipe(
         tap((resp) => {
           const genToken = resp.headers.get('generatedToken');
-          localStorage.setItem('access_token', genToken);
+          let user: User = resp.body;
+          user.token = genToken;
+          localStorage.setItem('currentUser', JSON.stringify(user));
+          this.currentUserSubject.next(user);
         }),
         catchError(this.handleLoginError)
         // catchError(this.handleError<any>('sign in'))
@@ -30,11 +41,15 @@ export class LoginService {
   }
 
   static signOut(): void {
-    localStorage.removeItem('access_token');
+    localStorage.removeItem('currentUser');
   }
 
   public get loggedIn(): boolean {
-    return (localStorage.getItem('access_token') !== null);
+    return (localStorage.getItem('currentUser') !== null);
+  }
+
+  public get currentUserValue(): User {
+    return this.currentUserSubject.value;
   }
 
   private handleLoginError(err: HttpErrorResponse) {
