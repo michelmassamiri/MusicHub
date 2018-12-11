@@ -11,6 +11,7 @@ import {SocialLoginModule, AuthServiceConfig} from 'angular-6-social-login';
 import {getAuthServiceConfigs, tokenGetter} from "./socialloginConfig";
 import {HttpClientModule} from "@angular/common/http";
 import {JwtModule} from "@auth0/angular-jwt";
+import { HomeComponent } from './components/home/home.component';
 
 @NgModule({
   declarations: [
@@ -18,6 +19,7 @@ import {JwtModule} from "@auth0/angular-jwt";
     LoginComponent,
     HeaderComponent,
     FooterComponent,
+    HomeComponent,
   ],
   imports: [
     BrowserModule,
