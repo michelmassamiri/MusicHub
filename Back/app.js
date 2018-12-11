@@ -10,8 +10,11 @@ const cors = require('cors');
 const corsOptions = {
     exposedHeaders: 'generatedToken'
 };
+
+/* API routes */
 const indexRouter = require('./routes/index');
 const usersRouter = require('./routes/users');
+const playlistsRouter = require('./routes/playlists');
 
 const app = express();
 
@@ -32,6 +35,7 @@ const db = mongoose.connection;
 
 app.use('/auth', indexRouter);
 app.use('/users', usersRouter);
+app.use('/playlists', playlistsRouter);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
