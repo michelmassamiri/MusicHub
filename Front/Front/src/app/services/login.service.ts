@@ -5,6 +5,7 @@ import {BehaviorSubject, Observable, of, throwError} from "rxjs/index";
 
 import {AUTH_GOOGLE_URI, MUSICHUB_API} from "../../consts";
 import {User} from "../entity/User";
+import {Router} from "@angular/router";
 
 let headers = new HttpHeaders({
   'Content-Type': 'application/json'
@@ -18,7 +19,7 @@ export class LoginService {
   private currentUserSubject: BehaviorSubject<User>;
   private currentUser: Observable<User>;
 
-  constructor(private http: HttpClient) {
+  constructor(private http: HttpClient, private router: Router) {
     this.currentUserSubject = new BehaviorSubject<User>(JSON.parse(localStorage.getItem('currentUser')));
     this.currentUser = this.currentUserSubject.asObservable();
   }
@@ -40,8 +41,10 @@ export class LoginService {
       );
   }
 
-  static signOut(): void {
+  signOut(): void {
     localStorage.removeItem('currentUser');
+    this.currentUserSubject.next(null);
+    this.router.navigate(['login']);
   }
 
   public get loggedIn(): boolean {
@@ -59,8 +62,9 @@ export class LoginService {
     else {
       if(err.error.error.name === 'UnauthorizedError' &&
         err.error.error.message === 'jwt expired') {
-          LoginService.signOut();
+          this.signOut();
           LoginService.log('Votre session a expirée ! Veuillez vous reconnectez');
+          this.router.navigate(['login']);
       }
       console.error(err.error);
       return throwError(err.message);
