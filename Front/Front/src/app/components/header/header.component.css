@@ -1,3 +1,13 @@
 .musicHub-header {
   background-color: black;
 }
+
+.user-account{
+  margin-left: 15px;
+  color: #ff9900;
+}
+
+.signout-button {
+  border: none;
+  background-color: transparent;
+}
