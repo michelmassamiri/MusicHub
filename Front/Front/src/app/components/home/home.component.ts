@@ -26,7 +26,7 @@ export class HomeComponent implements OnInit {
         this.playlistsService.importUserPlaylists(result)
           .subscribe(
             playlists => {
-              this.playlists.concat(playlists);
+              this.playlists = this.playlists.concat(playlists);
             },
               error => console.error(error)
           );
