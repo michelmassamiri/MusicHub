@@ -15,6 +15,7 @@ import {getAuthServiceConfigs, tokenGetter} from "./socialloginConfig";
 import {HttpClientModule} from "@angular/common/http";
 import {JwtModule} from "@auth0/angular-jwt";
 import { ToastrModule } from 'ngx-toastr';
+import {MatButtonModule, MatIconModule, MatMenuModule} from "@angular/material";
 
 
 @NgModule({
@@ -27,6 +28,9 @@ import { ToastrModule } from 'ngx-toastr';
   ],
   imports: [
     CommonModule,
+    MatMenuModule,
+    MatIconModule,
+    MatButtonModule,
     BrowserAnimationsModule,
     BrowserModule,
     AppRoutingModule,
