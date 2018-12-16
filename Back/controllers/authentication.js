@@ -18,6 +18,7 @@ exports.signInWithGoogle = function (req, res, next) {
     const token = req.get('Authorization-google');
     verifyGoogleToken(token)
         .then((payload)=> {
+            console.log(payload);
             const user = {
                 firstname: payload['given_name'],
                 lastname:  payload['family_name'],
