@@ -6,6 +6,7 @@ import {BehaviorSubject, Observable, of, throwError} from "rxjs/index";
 import {AUTH_GOOGLE_URI, MUSICHUB_API} from "../../consts";
 import {User} from "../entity/User";
 import {Router} from "@angular/router";
+import {AuthService} from "angular-6-social-login";
 
 let headers = new HttpHeaders({
   'Content-Type': 'application/json'
@@ -19,12 +20,16 @@ export class LoginService {
   private currentUserSubject: BehaviorSubject<User>;
   private currentUser: Observable<User>;
 
-  constructor(private http: HttpClient, private router: Router) {
+  constructor(
+    private http: HttpClient,
+    private router: Router,
+    private socialAuthService: AuthService
+  ) {
     this.currentUserSubject = new BehaviorSubject<User>(JSON.parse(localStorage.getItem('currentUser')));
     this.currentUser = this.currentUserSubject.asObservable();
   }
 
-  signInWithGoolge(token: string): Observable<HttpResponse<any>> {
+  public signInWithGoolge(token: string): Observable<HttpResponse<any>> {
     headers = headers.append('Authorization-google', token);
 
     return this.http.post<any>(this.googleAuthUrl, null, {headers, observe: 'response'})
@@ -41,10 +46,13 @@ export class LoginService {
       );
   }
 
-  signOut(): void {
+  public signOut(): void {
     localStorage.removeItem('currentUser');
     this.currentUserSubject.next(null);
-    this.router.navigate(['login']);
+    this.socialAuthService.signOut()
+      .then(()=> console.log('signed Out from Google'))
+      .catch(()=> console.log('err'));
+    window.location.replace('/login');
   }
 
   public get loggedIn(): boolean {
@@ -55,6 +63,7 @@ export class LoginService {
     return this.currentUserSubject.value;
   }
 
+  /* Error handler */
   private handleLoginError(err: HttpErrorResponse) {
     if(err.error instanceof ErrorEvent) {
       console.error('Client Error side : ', err.error.message);
