@@ -4,6 +4,49 @@
 }
 
 .add-playlist {
-  background-color: rgba(28, 173, 142, 0.93);
-  color: white  ;
+  background-color: #ff9900;
+  color: white;
+  border: none;
+  border-radius: 100px 100px 100px 100px;
+  padding: 5px 10px;
 }
+
+.import-button {
+  margin-right: 16px;
+  color: white;
+  border: none;
+  border-radius: 100px 100px 100px 100px;
+  padding: 5px 10px;
+}
+
+.import-button-youtube{
+  background-color:#c4302b ;
+}
+
+.import-button-spotify {
+  background-color:#1ed761;
+}
+
+.add-playlist:hover {
+  opacity: 0.9;
+}
+
+.button-row {
+  margin-bottom: 50px;
+}
+
+.material-icons.md-36 { font-size: 36px; }
+
+.play-button:hover {
+  color: #00B7FF;
+}
+
+.edit-button:hover {
+  color: goldenrod;
+}
+
+.delete-button:hover {
+  color: crimson;
+}
+
+
