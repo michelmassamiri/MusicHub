@@ -1,9 +1,7 @@
 const express = require('express');
 const router = express.Router();
+const playListController = require('../controllers/playlistController');
 
-router.get('/', function (req, res, next) {
-    const playLists = 'playlists';
-   res.send({playLists});
-});
-
+router.get('', playListController.getAllPlaylists);
+router.post('', playListController.createPlaylist);
 module.exports = router;
