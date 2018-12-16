@@ -1,11 +1,7 @@
 const mongoose = require('mongoose');
-
+ObjectId = mongoose.Schema.ObjectId;
 /* Setup the schema */
 const playlistsSchema = new mongoose.Schema({
-   id: {
-       type: Number,
-       required: true
-   },
    title: {
        type: String,
        required: true
@@ -14,6 +10,9 @@ const playlistsSchema = new mongoose.Schema({
        type: String
    },
    link: {
+       type: String
+   },
+   thumbnail: {
        type: String
    },
    user_id: {
