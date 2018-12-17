@@ -1,7 +1,9 @@
 Playlist = require('../models/playlistsModel');
 
 exports.getAllPlaylists = function (req, res, next) {
-    res.json([]);
+    Playlist.find({}, function (err, playlists) {
+       res.json(playlists);
+    });
 };
 
 exports.createPlaylist = function (req, res, next) {
@@ -20,14 +22,17 @@ function importPlaylistsFromYoutube(playlists, userId) {
         playlist.title = item.snippet.title;
         playlist.link = 'https://www.youtube.com/playlist?list=' + item.id;
         playlist.thumbnail = item.snippet.thumbnails.high.url;
-        playlist.user_id = userId
+        playlist.user_id = userId;
         userPlaylists.push(playlist);
     }
-    Playlist.insertMany(userPlaylists, function (err, savedPlaylists) {
-        if(err) {
-            console.log(err);
+
+    Playlist.insertOrUpdateFromYoutube(userPlaylists, userId, function (err, playlists) {
+        if(err){
+            console.error(err);
         }
-        userPlaylists = savedPlaylists;
+        else {
+            userPlaylists = playlists;
+        }
     });
 
     return userPlaylists;
