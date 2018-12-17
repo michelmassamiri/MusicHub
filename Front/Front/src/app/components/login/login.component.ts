@@ -1,9 +1,9 @@
 import { Component, OnInit } from '@angular/core';
-import {AuthService, GoogleLoginProvider} from 'angular-6-social-login';
 import {LoginService} from "../../services/login.service";
 import {isNullOrUndefined} from "util";
 import {Router} from "@angular/router";
-//declare var gapi: any;
+import {Oauth2Service} from "../../services/oauth2.service";
+import { ToastrService } from 'ngx-toastr';
 
 @Component({
   selector: 'app-login',
@@ -12,27 +12,20 @@ import {Router} from "@angular/router";
 })
 export class LoginComponent implements OnInit {
   constructor(
-    private socialAuthService: AuthService,
     private loginService: LoginService,
     private router: Router,
+    private oauth2Service: Oauth2Service,
+    private toastr: ToastrService
     ) {
-    // gapi.load('client:auth2', () => {
-    //   gapi.auth2.init({
-    //     client_id: '490320770076-pgociv0l4kfqvtufupkengo5clh8ha62.apps.googleusercontent.com',
-    //     cookiepolicy: 'single_host_origin',
-    //     scope: 'profile email https://www.googleapis.com/auth/youtube.readonly'
-    //   });
-    // });
   }
 
   ngOnInit() {
   }
 
-  public socialSignIn() {
-    const socialPlatformProvider = GoogleLoginProvider.PROVIDER_ID;
-    this.socialAuthService.signIn(socialPlatformProvider)
-      .then((user) => {
-        this.loginService.signInWithGoolge(user.idToken)
+  public signInWithGoogle(): void {
+    this.oauth2Service.singUpWithGoogle()
+      .then((idToken) => {
+        this.loginService.signInWithGoolge(idToken)
           .subscribe(
             resp => {
               if (isNullOrUndefined(resp)) return;
@@ -42,10 +35,9 @@ export class LoginComponent implements OnInit {
               console.error(error);
             });
       })
-      .catch(() => console.error('Impossible de se connecter avec google'));
-  }
-
-  signIn(): void{
-    //gapi.auth2.getAuthInstance().signIn().then(user => console.log(user));
+      .catch((err) => {
+        this.toastr.error("Vous n'êtes pas connecté avec Google", "Erreur d'authentification");
+        window.location.replace('/login');
+      });
   }
 }
