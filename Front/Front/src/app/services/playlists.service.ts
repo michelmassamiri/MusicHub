@@ -14,8 +14,8 @@ export class PlaylistsService {
               private http: HttpClient) {
   }
 
-  public getUserPlaylist(): Observable<any> {
-    return this.http.get(PLAYLISTS_URI);
+  public getUserPlaylist(): Observable<Playlist[]> {
+    return this.http.get<Playlist[]>(PLAYLISTS_URI);
   }
 
   public createUserPlaylist(playlist: Playlist): Observable<Playlist> {
