@@ -10,8 +10,7 @@ import { FooterComponent } from './components/footer/footer.component';
 import { HomeComponent } from './components/home/home.component';
 import { AppRoutingModule } from './app-routing.module';
 
-import {SocialLoginModule, AuthServiceConfig} from 'angular-6-social-login';
-import {getAuthServiceConfigs, tokenGetter} from "./socialloginConfig";
+import {tokenGetter} from "./socialloginConfig";
 import {HttpClientModule} from "@angular/common/http";
 import {JwtModule} from "@auth0/angular-jwt";
 import { ToastrModule } from 'ngx-toastr';
@@ -34,7 +33,6 @@ import {MatButtonModule, MatIconModule, MatMenuModule} from "@angular/material";
     BrowserAnimationsModule,
     BrowserModule,
     AppRoutingModule,
-    SocialLoginModule,
     HttpClientModule,
     JwtModule.forRoot({
       config: {
@@ -46,10 +44,6 @@ import {MatButtonModule, MatIconModule, MatMenuModule} from "@angular/material";
     ToastrModule.forRoot() // ToastrModule added
   ],
   providers: [
-    {
-    provide: AuthServiceConfig,
-    useFactory: getAuthServiceConfigs
-    },
   ],
   bootstrap: [AppComponent]
 })
