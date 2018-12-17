@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import {PlaylistsService} from "../../services/playlists.service";
 import {ImportFromYoutubeService} from "../../services/import-from-youtube.service";
 import {Playlist} from "../../entity/Playlist";
+import {ActivatedRoute} from "@angular/router";
 
 @Component({
   selector: 'app-home',
@@ -13,11 +14,12 @@ export class HomeComponent implements OnInit {
 
   constructor(
     private playlistsService: PlaylistsService,
-    private importYoutubePlaylist: ImportFromYoutubeService
+    private importYoutubePlaylist: ImportFromYoutubeService,
+    private route: ActivatedRoute
   ) {}
 
   ngOnInit() {
-
+    this.playlists = this.route.snapshot.data['playlists'];
   }
 
   importFromYoutube() {
@@ -26,11 +28,10 @@ export class HomeComponent implements OnInit {
         this.playlistsService.importUserPlaylists(result)
           .subscribe(
             playlists => {
-              this.playlists = this.playlists.concat(playlists);
+              this.playlists = playlists;
             },
               error => console.error(error)
           );
       });
   }
-
 }
