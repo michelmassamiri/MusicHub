@@ -1,7 +1,8 @@
 Playlist = require('../models/playlistsModel');
 
 exports.getAllPlaylists = function (req, res, next) {
-    Playlist.find({}, function (err, playlists) {
+    const userId = req.user.userID;
+    Playlist.find({user_id: userId}, function (err, playlists) {
        res.json(playlists);
     });
 };
