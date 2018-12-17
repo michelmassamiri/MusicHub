@@ -6,7 +6,7 @@ import {BehaviorSubject, Observable, of, throwError} from "rxjs/index";
 import {AUTH_GOOGLE_URI, MUSICHUB_API} from "../../consts";
 import {User} from "../entity/User";
 import {Router} from "@angular/router";
-import {AuthService} from "angular-6-social-login";
+import {Oauth2Service} from "./oauth2.service";
 
 let headers = new HttpHeaders({
   'Content-Type': 'application/json'
@@ -23,7 +23,7 @@ export class LoginService {
   constructor(
     private http: HttpClient,
     private router: Router,
-    private socialAuthService: AuthService
+    private oauth2Service: Oauth2Service
   ) {
     this.currentUserSubject = new BehaviorSubject<User>(JSON.parse(localStorage.getItem('currentUser')));
     this.currentUser = this.currentUserSubject.asObservable();
@@ -49,7 +49,7 @@ export class LoginService {
   public signOut(): void {
     localStorage.removeItem('currentUser');
     this.currentUserSubject.next(null);
-    this.socialAuthService.signOut()
+    this.oauth2Service.signOutFromGoogle()
       .then(()=> console.log('signed Out from Google'))
       .catch(()=> console.log('err'));
     window.location.replace('/login');
