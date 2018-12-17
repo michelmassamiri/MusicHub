@@ -3,6 +3,7 @@ import { RouterModule, Routes } from '@angular/router';
 import {LoginComponent} from './components/login/login.component';
 import {HomeComponent} from "./components/home/home.component";
 import {AuthGuard} from "./guards/auth.guard";
+import {PlaylistsResolverService} from "./resolvers/playlists-resolver.service";
 
 const routes: Routes = [
   {
@@ -10,7 +11,10 @@ const routes: Routes = [
   },
   {
     path: '', component: HomeComponent,
-    canActivate: [AuthGuard]
+    canActivate: [AuthGuard],
+    resolve: {
+      playlists: PlaylistsResolverService
+    }
   }
 ];
 
