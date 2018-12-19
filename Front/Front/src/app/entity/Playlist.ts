@@ -3,6 +3,8 @@ export class Playlist {
   genre: string;
   link: string;
   thumbnail: string;
+  description: string;
+  nbItems: number;
   user_id: string;
 
   constructor(){
@@ -10,6 +12,8 @@ export class Playlist {
     this.genre = '';
     this.link = '';
     this.thumbnail = '';
+    this.description = '';
+    this.nbItems = 0;
     this.user_id = '';
   }
 }
