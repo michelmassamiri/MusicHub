@@ -3,6 +3,8 @@ import {PlaylistsService} from "../../services/playlists.service";
 import {ImportFromYoutubeService} from "../../services/import-from-youtube.service";
 import {Playlist} from "../../entity/Playlist";
 import {ActivatedRoute} from "@angular/router";
+import {ToastrService} from "ngx-toastr";
+import {SpinnerService} from "../../services/spinner.service";
 
 @Component({
   selector: 'app-home',
@@ -15,7 +17,9 @@ export class HomeComponent implements OnInit {
   constructor(
     private playlistsService: PlaylistsService,
     private importYoutubePlaylist: ImportFromYoutubeService,
-    private route: ActivatedRoute
+    private route: ActivatedRoute,
+    private toastr: ToastrService,
+    private spninnerService: SpinnerService
   ) {}
 
   ngOnInit() {
@@ -23,14 +27,20 @@ export class HomeComponent implements OnInit {
   }
 
   importFromYoutube() {
+    this.spninnerService.display(true);
     this.importYoutubePlaylist.importPlaylists()
       .then((result) => {
         this.playlistsService.importUserPlaylists(result)
           .subscribe(
             playlists => {
               this.playlists = playlists;
+              this.spninnerService.display(false);
             },
-              error => console.error(error)
+              error => {
+                console.error(error);
+                this.toastr.error("Impossible d'importez vos playlists depuis Youtube",
+                  "Erreur d'importation");
+              }
           );
       });
   }

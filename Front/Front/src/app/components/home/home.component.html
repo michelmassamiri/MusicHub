@@ -13,14 +13,6 @@
 <div class="py-5" style="padding-top: 16px !important;">
   <div class="container">
     <div class="button-row">
-      <!--<button (click)="importFromYoutube()" mat-raised-button class="import-button import-button-youtube">-->
-        <!--<i class="fa fa-youtube-play fa-2x" style="margin-bottom: 3px; margin-right: 3px"></i>-->
-        <!--Importez de Youtube-->
-      <!--</button>-->
-      <!--<button mat-raised-button class="import-button import-button-spotify">-->
-        <!--<i class="fa fa-spotify fa-2x" style="margin-bottom: 3px; margin-right: 3px"></i>-->
-        <!--Importez de Spotify-->
-      <!--</button>-->
       <button mat-raised-button class="add-playlist float-right">
         <mat-icon>add</mat-icon>
         Ajouter un playlist
@@ -49,8 +41,7 @@
               <h4 class="card-title">{{playlist.title}}</h4>
               <i class="fa fa-youtube-play fa-2x youtube"></i>
               <p class="card-text">
-                This is a wider card with supporting text below as a natural
-                lead-in to additional content. This content is a little bit longer.
+                {{playlist.description}}
               </p>
               <div class="d-flex justify-content-between align-items-center">
                 <button mat-icon-button [matMenuTriggerFor]="menu">
@@ -70,7 +61,7 @@
                     <span>Supprimer</span>
                   </button>
                 </mat-menu>
-                <span class="text-right text-muted">15 songs</span>
+                <span class="text-right text-muted">{{playlist.nbItems}} song(s)</span>
               </div>
             </div>
           </div>
