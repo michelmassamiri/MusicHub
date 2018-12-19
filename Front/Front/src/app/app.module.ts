@@ -9,12 +9,13 @@ import { HeaderComponent } from './components/header/header.component';
 import { FooterComponent } from './components/footer/footer.component';
 import { HomeComponent } from './components/home/home.component';
 import { AppRoutingModule } from './app-routing.module';
-
 import {tokenGetter} from "./socialloginConfig";
+
 import {HttpClientModule} from "@angular/common/http";
 import {JwtModule} from "@auth0/angular-jwt";
 import { ToastrModule } from 'ngx-toastr';
 import {MatButtonModule, MatIconModule, MatMenuModule} from "@angular/material";
+import {MatProgressSpinnerModule} from '@angular/material/progress-spinner';
 
 
 @NgModule({
@@ -30,6 +31,7 @@ import {MatButtonModule, MatIconModule, MatMenuModule} from "@angular/material";
     MatMenuModule,
     MatIconModule,
     MatButtonModule,
+    MatProgressSpinnerModule,
     BrowserAnimationsModule,
     BrowserModule,
     AppRoutingModule,

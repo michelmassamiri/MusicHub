@@ -1,4 +1,5 @@
 import { Component } from '@angular/core';
+import { SpinnerService } from './services/spinner.service';
 
 @Component({
   selector: 'app-root',
@@ -6,5 +7,15 @@ import { Component } from '@angular/core';
   styleUrls: ['./app.component.css']
 })
 export class AppComponent {
-  title = 'Front';
+  spinner: boolean;
+
+  constructor(private spinnerService: SpinnerService) {}
+
+  ngOnInit() {
+    let self = this;
+
+    this.spinnerService.status.subscribe((value => {
+      self.spinner = value;
+    }));
+  }
 }

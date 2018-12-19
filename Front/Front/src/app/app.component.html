@@ -6,7 +6,11 @@
   <body style="font-family: Gabriela">
     <app-header></app-header>
     <main role="main">
-      <router-outlet></router-outlet>
+      <router-outlet>
+        <div *ngIf="spinner" class="spinner">
+          <mat-spinner></mat-spinner>
+        </div>
+      </router-outlet>
     </main>
     <app-footer></app-footer>
   </body>
