@@ -15,6 +15,12 @@ const playlistsSchema = new mongoose.Schema({
    thumbnail: {
        type: String
    },
+   description: {
+       type: String
+   },
+   nbItems: {
+       type: Number
+   },
    user_id: {
        type: ObjectId,
        required: true
@@ -30,49 +36,34 @@ playlistsSchema.options.toJSON = {
     }
 };
 
-playlistsSchema.statics.insertOrUpdateFromYoutube = async function (playlists, userId, cb) {
-    let playlistsToUpdate = [];
-    let playlistsToInsert = [];
-    let result = [];
-    let error = null;
+playlistsSchema.statics.insertOrUpdateFromYoutube = async function (playlists, userId) {
+    let that = this;
+    let promiseArary = [];
 
-    const criteria = playlists.map(elem => elem.link);
-    await this.find({link: {$in: criteria}, user_id:  mongoose.Types.ObjectId(userId)})
-        .exec(function (err, dbPlaylists) {
-            playlistsToUpdate = playlistsToUpdate.concat(dbPlaylists);
-            playlistsToInsert = playlistsToUpdate.filter(elemToUpdate => {
-                playlistsToInsert.forEach(elemToInsert => {
-                    return elemToUpdate.link !== elemToInsert;
-                });
-            });
-        });
-
-    if(playlistsToInsert.length !== 0) {
-        this.insertMany(playlistsToInsert, function (err, res) {
-           if(err) {
-               console.error(err);
-               return cb(err, res);
-           }
-           else {
-               playlistsToInsert = res;
-           }
-        });
+    for(let playlist of playlists) {
+        promiseArary.push(updateUserPlaylistByLink(playlist, userId, that));
     }
 
-    playlistsToUpdate.forEach(async function (item) {
-        await this.updateOne({ 'link': item.link }, item, function (err, response) {
-            if(err) {
-                console.error(err);
-                error = err;
-            }
-            else {
-                result.push(response);
-            }
-        });
-    });
-
-    return cb(error, result.concat(playlistsToInsert));
+    return await Promise.all(promiseArary);
 };
+
+async function getPlaylistsToUpdate(newPlaylists, userId, that) {
+    let playlistsToUpdate;
+    const playlistsLinks = newPlaylists.map(elem => elem.link);
+
+    playlistsToUpdate = await that.find({link: {$in: playlistsLinks}, user_id:  mongoose.Types.ObjectId(userId)})
+        .lean()
+        .exec();
+
+    return playlistsToUpdate;
+}
+
+function updateUserPlaylistByLink(playlist, userId, that){
+    return that.updateOne({ link: playlist.link, user_id: mongoose.Types.ObjectId(userId)},
+        {$set: { title: playlist.title, genre: playlist.genre,
+            thumbnail: playlist.thumbnail, description: playlist.description, nbItems: playlist.nbItems }},
+        {upsert: true}).exec();
+}
 
 const PlayList = module.exports = mongoose.model('PlayList', playlistsSchema);
 module.exports.get = function (callback, limit) {
