@@ -2,12 +2,26 @@ Playlist = require('../models/playlistsModel');
 
 exports.getAllPlaylists = function (req, res, next) {
     const userId = req.user.userID;
-    Playlist.find({user_id: userId}, function (err, playlists) {
-       res.json(playlists);
-    });
+
+    Playlist.getUserPlaylists(userId)
+        .then((userPlaylists)=> {
+            res.json(userPlaylists);
+        })
+        .catch((err)=> next(err));
 };
 
 exports.createPlaylist = function (req, res, next) {
+    const userId = req.user.userID;
+    const playlist = req.body;
+
+    Playlist.insertPlaylist(playlist, userId)
+        .then((savedPlaylist)=> {
+            res.json(savedPlaylist);
+        })
+        .catch((err)=> next(err));
+};
+
+exports.importFromYoutube = function (req, res, next) {
     const userId = req.user.userID;
     const playlists = req.body;
     if(Array.isArray(playlists)) {
@@ -18,6 +32,17 @@ exports.createPlaylist = function (req, res, next) {
             .catch(err => {
                console.error(err);
                next(err);
+            });
+    }
+    else {
+       const playlistToImport = [playlists];
+        importPlaylistsFromYoutube(playlistToImport, userId)
+            .then((playlists) => {
+                res.json(playlists);
+            })
+            .catch(err => {
+                console.error(err);
+                next(err);
             });
     }
 };
@@ -38,12 +63,4 @@ async function importPlaylistsFromYoutube(playlists, userId) {
     await Playlist.insertOrUpdateFromYoutube(userPlaylists, userId);
 
     return userPlaylists;
-}
-
-function importFromSpotify() {
-
-}
-
-function importFromDeezer() {
-
 }
