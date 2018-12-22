@@ -21,6 +21,10 @@ export class PlaylistsService {
     return this.http.post<Playlist>(PLAYLISTS_URI, playlist);
   }
 
+  public deleteUserPlaylist(id: string): Observable<Playlist> {
+    return this.http.delete<Playlist>(PLAYLISTS_URI + "/" + id);
+  }
+
   public importUserPlaylists(playlsts: Object[]): Observable<Playlist[]> {
     return this.http.post<Playlist[]>(IMPORTPLAYLIST + '/youtube', playlsts);
   }
