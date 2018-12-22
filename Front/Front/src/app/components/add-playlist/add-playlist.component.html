@@ -1,0 +1,44 @@
+<section class="add-playlist-background transparent">
+  <div class="container">
+    <div class="modal-header">
+      <h1 class="col-12 modal-title" style="font-weight: bold; color: #ff9900">
+        Ajouter un Playlist
+      </h1>
+    </div>
+  </div>
+</section>
+
+<div class="container-fluid">
+  <form name="form" role="form" class="form-add-playlist" (ngSubmit)="f.form.valid && addPlaylist()" #f="ngForm" >
+    <mat-form-field class="inputmodal-playlist">
+      <input [(ngModel)]="playlist.title" name="title" matInput placeholder="Titre de la playlist" required>
+    </mat-form-field>
+
+    <mat-form-field class="inputmodal-playlist">
+      <textarea [(ngModel)]="playlist.description" name="description" matInput placeholder="Description"></textarea>
+    </mat-form-field>
+
+    <mat-form-field class="inputmodal-playlist">
+      <mat-select placeholder="Genre" [(ngModel)]="playlist.genre" name="genre">
+        <mat-option>Aucune</mat-option>
+        <mat-option *ngFor="let genre of genres" [value]="genre">
+          {{genre}}
+        </mat-option>
+      </mat-select>
+    </mat-form-field>
+
+    <mat-form-field class="inputmodal-playlist">
+      <input [(ngModel)]="playlist.thumbnail" name="url" type="url" matInput placeholder="URL de la photo">
+    </mat-form-field>
+
+    <button mat-raised-button class="musichub-rounded-botton confirm-button">
+      <mat-icon>add</mat-icon>
+      Créez
+    </button>
+
+    <button mat-raised-button class="musichub-rounded-botton cancel-button" type="button" (click)="cancel()">
+      <mat-icon>cancel</mat-icon>
+      Annuler
+    </button>
+  </form>
+</div>

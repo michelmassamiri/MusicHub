@@ -1,0 +1,42 @@
+.form-add-playlist {
+  width: 100%;
+  min-width: 150px;
+  max-width: 500px;
+  margin: 0px auto;
+}
+
+.inputmodal-playlist {
+  width: 100%;
+}
+
+section.add-playlist-background.transparent {
+  margin-bottom: 20px;
+  padding-bottom: 100px;
+  text-align: center;
+  background-image: url("https://photy.org/photocms/files/Bassano_del_Grappa2C_Italy_28Unsplash29.jpg");
+  background-size: cover;
+  background-position: center center;
+  background-repeat: no-repeat;
+}
+
+.transparent{
+  opacity: 0.9;
+}
+
+.add-playlist-header{
+  text-align: center;
+  padding-top: 20px;
+  padding-bottom: 20px;
+  color: #ff9900;
+}
+
+.confirm-button {
+  background-color: limegreen;
+  color: white;
+}
+
+.cancel-button {
+  background-color: red;
+  color: white;
+  float: right;
+}
