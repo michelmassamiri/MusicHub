@@ -5,18 +5,8 @@ declare var gapi: any;
   providedIn: 'root'
 })
 export class Oauth2Service {
-  private auth2: any;
 
   constructor() {
-    gapi.load('client:auth2', () => {
-      gapi.auth2.init({
-        client_id: '490320770076-pgociv0l4kfqvtufupkengo5clh8ha62.apps.googleusercontent.com',
-        cookiepolicy: 'single_host_origin',
-        scope: 'profile email https://www.googleapis.com/auth/youtube.readonly'
-      }).then(()=> {
-        this.auth2 = gapi.auth2.getAuthInstance();
-      });
-    });
   }
 
   singUpWithGoogle() : Promise<any> {
