@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import {PlaylistsService} from "../../services/playlists.service";
 import {ImportFromYoutubeService} from "../../services/import-from-youtube.service";
 import {Playlist} from "../../entity/Playlist";
-import {ActivatedRoute} from "@angular/router";
+import {ActivatedRoute, Router} from "@angular/router";
 import {ToastrService} from "ngx-toastr";
 import {SpinnerService} from "../../services/spinner.service";
 
@@ -19,7 +19,8 @@ export class HomeComponent implements OnInit {
     private importYoutubePlaylist: ImportFromYoutubeService,
     private route: ActivatedRoute,
     private toastr: ToastrService,
-    private spninnerService: SpinnerService
+    private spninnerService: SpinnerService,
+    private router: Router
   ) {}
 
   ngOnInit() {
@@ -43,5 +44,9 @@ export class HomeComponent implements OnInit {
               }
           );
       });
+  }
+
+  addPlaylist() {
+    this.router.navigate(['add-playlist']);
   }
 }
