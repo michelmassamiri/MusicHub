@@ -1,4 +1,5 @@
 export class Playlist {
+  id: string
   title: string;
   genre: string;
   link: string;
@@ -8,6 +9,7 @@ export class Playlist {
   user_id: string;
 
   constructor(){
+    this.id = '';
     this.title = '';
     this.genre = '';
     this.link = '';
