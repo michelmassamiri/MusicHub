@@ -47,6 +47,17 @@ exports.importFromYoutube = function (req, res, next) {
     }
 };
 
+exports.deletePlaylist = function (req, res, next) {
+    const userId = req.user.userID;
+    const playlistId = req.params.id;
+
+    Playlist.deleteUserPlaylist(playlistId, userId)
+        .then((deletedPlaylist)=> {
+            res.json(deletedPlaylist);
+        })
+        .catch((err) => next(err));
+};
+
 async function importPlaylistsFromYoutube(playlists, userId) {
     let userPlaylists = [];
     for(const item of playlists) {
