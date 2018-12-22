@@ -1,9 +1,8 @@
 import { Injectable } from '@angular/core';
 import {LoginService} from "./login.service";
-import {HttpClient, HttpParams} from "@angular/common/http";
+import {HttpClient} from "@angular/common/http";
 import {Observable} from "rxjs/index";
 import {IMPORTPLAYLIST, PLAYLISTS_URI} from "../../consts";
-import {tap} from "rxjs/internal/operators";
 import {Playlist} from "../entity/Playlist";
 
 @Injectable({
@@ -23,7 +22,7 @@ export class PlaylistsService {
   }
 
   public importUserPlaylists(playlsts: Object[]): Observable<Playlist[]> {
-    return this.http.post<Playlist[]>(PLAYLISTS_URI, playlsts);
+    return this.http.post<Playlist[]>(IMPORTPLAYLIST + '/youtube', playlsts);
   }
 
 }
