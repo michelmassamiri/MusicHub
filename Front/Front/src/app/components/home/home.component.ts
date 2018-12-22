@@ -49,4 +49,22 @@ export class HomeComponent implements OnInit {
   addPlaylist() {
     this.router.navigate(['add-playlist']);
   }
+
+  deletePlaylist(id: string) {
+    this.playlistsService.deleteUserPlaylist(id)
+      .subscribe(
+        deletedPlaylist => {
+          this.playlists = this.playlists
+            .filter(item => {
+              return item.id !== deletedPlaylist.id;
+            });
+          this.toastr.success("La playlist est bien supprimée", "Succès");
+          console.log(deletedPlaylist);
+        },
+        err => {
+          this.toastr.error("Impossible de supprimer la playlist", "Erreur");
+          console.error(err);
+        }
+      );
+  }
 }
