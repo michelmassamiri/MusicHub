@@ -20,11 +20,16 @@ const app = express();
 
 app.use(logger('dev'));
 app.use(cors(corsOptions));
-app.use(expressJwt({secret: 'musicHub-app-shared-secret'}).unless({path: ['/auth/google']}));
+app.use('/public/images', express.static(path.join(__dirname, 'public/images')));
+app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
+app.use(expressJwt({secret: 'musicHub-app-shared-secret'}).unless(
+    {
+        path: ['/auth/google']
+    }
+));
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
-app.use(express.static(path.join(__dirname, 'public')));
 /* Body Parser and mongoose */
 app.use(bodyParser.urlencoded({
     extended: true
