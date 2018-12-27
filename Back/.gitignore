@@ -1,7 +1,8 @@
 #Webstorm
 ./idea
 
-#NodeJS Jade
+#NodeJS
 views/
 node_modules/
 public/
+uploads/
