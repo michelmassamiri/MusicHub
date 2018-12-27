@@ -40,3 +40,19 @@ section.add-playlist-background.transparent {
   color: white;
   float: right;
 }
+
+.upload-image-button {
+  background-color: #ff9900;
+  color: white;
+}
+
+.remove-image-button {
+  background-color: red;
+  color: white;
+  float: right;
+}
+
+.buttons-form {
+  margin-top: 16px;
+  align-items: center;
+}
