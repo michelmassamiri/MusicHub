@@ -33,8 +33,8 @@ export class HomeComponent implements OnInit {
       .then((result) => {
         this.playlistsService.importUserPlaylists(result)
           .subscribe(
-            playlists => {
-              this.playlists = playlists;
+            youtubePlaylists => {
+              this.updateYoutubePlaylists(youtubePlaylists);
               this.spninnerService.display(false);
             },
               error => {
@@ -67,4 +67,16 @@ export class HomeComponent implements OnInit {
         }
       );
   }
+
+  private updateYoutubePlaylists(youtubePlaylists: Playlist[]) {
+    this.playlists = this.playlists.filter(item => {
+      return !(item.link.includes("youtube"));
+    });
+    this.playlists = this.playlists.concat(youtubePlaylists);
+  }
+
+  public isYoutubePlaylist(playlist: Playlist): boolean {
+    return (playlist.link.includes("youtube"));
+  }
+
 }

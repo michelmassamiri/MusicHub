@@ -27,18 +27,44 @@
       </mat-select>
     </mat-form-field>
 
-    <mat-form-field class="inputmodal-playlist">
-      <input [(ngModel)]="playlist.thumbnail" name="url" type="url" matInput placeholder="URL de la photo">
-    </mat-form-field>
+    <div class="form-group inputmodal-playlist">
+      <input #selectedPicture name="thumbnail" type="file" placeholder="photo de la playlist"
+             ng2FileSelect [uploader]="uploader">
+      <!--<button type="button" class="btn btn-success btn-s"-->
+              <!--(click)="uploader.uploadAll()"-->
+              <!--[disabled]="!uploader.getNotUploadedItems().length">-->
+        <!--Ajouter l'image de la playlist-->
+      <!--</button>-->
+    </div>
 
-    <button mat-raised-button class="musichub-rounded-botton confirm-button">
-      <mat-icon>add</mat-icon>
-      Créez
-    </button>
+    <div class="form-group buttons-form">
+      <button mat-raised-button type="button"
+              (click)="uploader.uploadAll()"
+              [disabled]="!uploader.getNotUploadedItems().length"
+              class="musichub-rounded-botton upload-image-button">
+        <mat-icon>add_a_photo</mat-icon>
+        Ajouter une image
+      </button>
 
-    <button mat-raised-button class="musichub-rounded-botton cancel-button" type="button" (click)="cancel()">
-      <mat-icon>cancel</mat-icon>
-      Annuler
-    </button>
+      <button *ngIf="uploader.queue.length > 0;" mat-raised-button type="button"
+              (click)="removePhoto(uploader.queue[0])"
+              class="musichub-rounded-botton remove-image-button">
+        <mat-icon>delete_forever</mat-icon>
+        retirer l'image
+      </button>
+    </div>
+
+    <div class="form-group buttons-form">
+      <button mat-raised-button class="musichub-rounded-botton confirm-button">
+        <mat-icon>add</mat-icon>
+        Créez
+      </button>
+
+      <button mat-raised-button class="musichub-rounded-botton cancel-button" type="button" (click)="cancel()">
+        <mat-icon>cancel</mat-icon>
+        Annuler
+      </button>
+
+    </div>
   </form>
 </div>
