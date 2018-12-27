@@ -10,3 +10,6 @@ export const AUTH_DEEZER_URI = AUTH_URI + '/deezer';
 export const PLAYLISTS_URI = MUSICHUB_API + '/playlists';
 export const IMPORTPLAYLIST = PLAYLISTS_URI + '/import';
 export const ADD_USER_URI = 'register';
+
+/* Uploads URI */
+export const THUMBNAIL_UPLOAD_URI = PLAYLISTS_URI + '/thumbnails/upload';
