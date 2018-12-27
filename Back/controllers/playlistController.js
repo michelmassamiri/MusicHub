@@ -1,5 +1,20 @@
 Playlist = require('../models/playlistsModel');
+const multer = require('multer');
+const DIR = './uploads';
+let storage = multer.diskStorage({
+    destination: (req, file, cb) => {
+        cb(null, DIR);
+    },
+    filename: (req, file, cb) => {
+        const ext = '.' + file.mimetype.split('/')[1];
+        require('crypto').pseudoRandomBytes(16, function (err, raw) {
+            cb(null, (err ? undefined : raw.toString('hex') ) + ext);
+        });
+    }
+});
+let upload = multer({storage: storage}).single('file');
 
+/* CRUD Methods */
 exports.getAllPlaylists = function (req, res, next) {
     const userId = req.user.userID;
 
@@ -21,32 +36,6 @@ exports.createPlaylist = function (req, res, next) {
         .catch((err)=> next(err));
 };
 
-exports.importFromYoutube = function (req, res, next) {
-    const userId = req.user.userID;
-    const playlists = req.body;
-    if(Array.isArray(playlists)) {
-        importPlaylistsFromYoutube(playlists, userId)
-            .then((playlists) => {
-                res.json(playlists);
-            })
-            .catch(err => {
-               console.error(err);
-               next(err);
-            });
-    }
-    else {
-       const playlistToImport = [playlists];
-        importPlaylistsFromYoutube(playlistToImport, userId)
-            .then((playlists) => {
-                res.json(playlists);
-            })
-            .catch(err => {
-                console.error(err);
-                next(err);
-            });
-    }
-};
-
 exports.deletePlaylist = function (req, res, next) {
     const userId = req.user.userID;
     const playlistId = req.params.id;
@@ -56,6 +45,43 @@ exports.deletePlaylist = function (req, res, next) {
             res.json(deletedPlaylist);
         })
         .catch((err) => next(err));
+};
+
+/* Utils methods for Playlists resource */
+exports.uploadThumbnail = function (req, res, next) {
+    upload(req, res, function (err) {
+        if (err) {
+            next(err);
+        } else {
+            res.json(req.file.filename);
+        }
+    });
+};
+
+exports.importFromYoutube = function (req, res, next) {
+    const userId = req.user.userID;
+    const playlists = req.body;
+    if(Array.isArray(playlists)) {
+        importPlaylistsFromYoutube(playlists, userId)
+            .then((playlists) => {
+                res.json(playlists);
+            })
+            .catch(err => {
+                console.error(err);
+                next(err);
+            });
+    }
+    else {
+        const playlistToImport = [playlists];
+        importPlaylistsFromYoutube(playlistToImport, userId)
+            .then((playlists) => {
+                res.json(playlists);
+            })
+            .catch(err => {
+                console.error(err);
+                next(err);
+            });
+    }
 };
 
 async function importPlaylistsFromYoutube(playlists, userId) {
