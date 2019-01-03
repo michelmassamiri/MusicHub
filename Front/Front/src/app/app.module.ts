@@ -16,12 +16,16 @@ import { AddPlaylistComponent } from './components/add-playlist/add-playlist.com
 import {HttpClientModule} from "@angular/common/http";
 import {JwtModule} from "@auth0/angular-jwt";
 import { ToastrModule } from 'ngx-toastr';
-import {MatButtonModule, MatIconModule, MatMenuModule} from "@angular/material";
+import {
+  MatButtonModule, MatDialog, MatDialogModule, MatDialogRef, MatIconModule,
+  MatMenuModule
+} from "@angular/material";
 import {MatProgressSpinnerModule} from '@angular/material/progress-spinner';
 import {MatFormFieldModule} from '@angular/material/form-field';
 import {MatInputModule} from '@angular/material/input';
 import {MatSelectModule} from '@angular/material/select';
 import { FileSelectDirective } from 'ng2-file-upload';
+import { EditPlaylistComponent } from './components/edit-playlist/edit-playlist.component';
 
 @NgModule({
   declarations: [
@@ -31,7 +35,8 @@ import { FileSelectDirective } from 'ng2-file-upload';
     FooterComponent,
     HomeComponent,
     AddPlaylistComponent,
-    FileSelectDirective
+    FileSelectDirective,
+    EditPlaylistComponent
   ],
   imports: [
     CommonModule,
@@ -42,6 +47,7 @@ import { FileSelectDirective } from 'ng2-file-upload';
     MatFormFieldModule,
     MatInputModule,
     MatSelectModule,
+    MatDialogModule,
     BrowserAnimationsModule,
     BrowserModule,
     FormsModule,
@@ -55,6 +61,9 @@ import { FileSelectDirective } from 'ng2-file-upload';
       }
     }),
     ToastrModule.forRoot() // ToastrModule added
+  ],
+  entryComponents: [
+    EditPlaylistComponent
   ],
   providers: [
   ],
