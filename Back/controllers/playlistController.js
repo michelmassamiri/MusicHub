@@ -47,6 +47,22 @@ exports.deletePlaylist = function (req, res, next) {
         .catch((err) => next(err));
 };
 
+exports.updatePlaylist = function (req, res, next) {
+  const userId = req.user.userID;
+  const playlistId = req.params.id;
+  const args = req.body;
+
+  if(args.user_id || args.id || args._id || args.link || args.thumbnail || args.nbItems) {
+      return res.status(422).send("Only title, description or/and genre can be updated");
+  }
+
+  Playlist.updateUserPlaylist(playlistId, userId, args)
+      .then((updatedPlaylist)=> {
+          res.json(updatedPlaylist);
+      })
+      .catch((err) => next(err));
+};
+
 /* Utils methods for Playlists resource */
 exports.uploadThumbnail = function (req, res, next) {
     upload(req, res, function (err) {
