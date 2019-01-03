@@ -25,8 +25,11 @@ export class PlaylistsService {
     return this.http.delete<Playlist>(PLAYLISTS_URI + "/" + id);
   }
 
+  public updateUserPlaylist(id: string, args: any): Observable<Playlist> {
+    return this.http.put<Playlist>(PLAYLISTS_URI + "/" + id, args);
+  }
+
   public importUserPlaylists(playlsts: Object[]): Observable<Playlist[]> {
     return this.http.post<Playlist[]>(IMPORTPLAYLIST + '/youtube', playlsts);
   }
-
 }
