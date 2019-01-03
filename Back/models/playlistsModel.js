@@ -73,6 +73,14 @@ playlistsSchema.statics.deleteUserPlaylist = async function (playlistId, userId)
         .exec();
 };
 
+playlistsSchema.statics.updateUserPlaylist = async function (playlistId, userId, playlist) {
+  return await this.findOneAndUpdate({user_id: mongoose.Types.ObjectId(userId),
+      _id: mongoose.Types.ObjectId(playlistId)},
+      playlist,
+      {new: true})
+      .exec();
+};
+
 /* Private functions */
 function updateUserPlaylistByLink(playlist, userId, that){
     return that.updateOne({ link: playlist.link, user_id: mongoose.Types.ObjectId(userId)},
