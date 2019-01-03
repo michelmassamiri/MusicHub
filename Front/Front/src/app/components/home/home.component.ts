@@ -5,6 +5,8 @@ import {Playlist} from "../../entity/Playlist";
 import {ActivatedRoute, Router} from "@angular/router";
 import {ToastrService} from "ngx-toastr";
 import {SpinnerService} from "../../services/spinner.service";
+import {MatDialog, MatDialogActions} from "@angular/material";
+import {EditPlaylistComponent} from "../edit-playlist/edit-playlist.component";
 
 @Component({
   selector: 'app-home',
@@ -20,7 +22,8 @@ export class HomeComponent implements OnInit {
     private route: ActivatedRoute,
     private toastr: ToastrService,
     private spninnerService: SpinnerService,
-    private router: Router
+    private router: Router,
+    public dialog: MatDialog
   ) {}
 
   ngOnInit() {
@@ -51,6 +54,7 @@ export class HomeComponent implements OnInit {
   }
 
   deletePlaylist(id: string) {
+    this.spninnerService.display(true);
     this.playlistsService.deleteUserPlaylist(id)
       .subscribe(
         deletedPlaylist => {
@@ -58,14 +62,47 @@ export class HomeComponent implements OnInit {
             .filter(item => {
               return item.id !== deletedPlaylist.id;
             });
+          this.spninnerService.display(false);
           this.toastr.success("La playlist est bien supprimée", "Succès");
-          console.log(deletedPlaylist);
         },
         err => {
+          this.spninnerService.display(false);
           this.toastr.error("Impossible de supprimer la playlist", "Erreur");
           console.error(err);
         }
       );
+  }
+
+  updatePlaylist(playlist: Playlist): void {
+    const dialogRef = this.dialog.open(EditPlaylistComponent, {
+      width: '400px',
+      data: {
+        id: playlist.id,
+        title: playlist.title,
+        genre: playlist.genre,
+        description: playlist.description,
+      }
+    });
+
+    dialogRef.afterClosed().subscribe(result => {
+      if(result) {
+        this.spninnerService.display(true);
+        this.playlistsService.updateUserPlaylist(playlist.id, result)
+          .subscribe(
+            updatedPlaylist => {
+              this.playlists = this.playlists.filter(item => {
+                return item.id !== playlist.id;
+              });
+              this.playlists.push(updatedPlaylist);
+              this.spninnerService.display(false);
+              this.toastr.success('La playliste a été bien modifiée', 'Succès');
+            },
+            err => {
+              this.toastr.error('Impossible de modifier la playliste', 'Erreur modification serveur');
+              this.spninnerService.display(false);
+            });
+      }
+    });
   }
 
   private updateYoutubePlaylists(youtubePlaylists: Playlist[]) {
