@@ -44,6 +44,7 @@ export class HomeComponent implements OnInit {
                 console.error(error);
                 this.toastr.error("Impossible d'importez vos playlists depuis Youtube",
                   "Erreur d'importation");
+                this.spninnerService.display(false);
               }
           );
       });
@@ -77,7 +78,6 @@ export class HomeComponent implements OnInit {
     const dialogRef = this.dialog.open(EditPlaylistComponent, {
       width: '400px',
       data: {
-        id: playlist.id,
         title: playlist.title,
         genre: playlist.genre,
         description: playlist.description,

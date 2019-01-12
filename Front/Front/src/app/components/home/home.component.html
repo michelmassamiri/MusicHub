@@ -39,7 +39,9 @@
                  alt="Thumbnail [100%x225]" data-holder-rendered="true">
             <div class="card-body">
               <div class="card-title">
-                <h4 class="card-title">{{playlist.title}}</h4>
+                <a routerLink="/playlists/{{playlist.id}}">
+                  <h4 class="card-title">{{playlist.title}}</h4>
+                </a>
                 <span class="text-muted">{{playlist.genre}}</span>
               </div>
 

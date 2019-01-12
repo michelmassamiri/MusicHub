@@ -24,6 +24,13 @@ export class ImportFromYoutubeService {
     }
   }
 
+  importSongsByPlaylist(playlistId: string): Promise<any> {
+    const isSignedInWithGoogle = gapi.auth2.getAuthInstance().isSignedIn.get();
+    if (isSignedInWithGoogle) {
+      return this.getSongsByPlaylistId(playlistId);
+    }
+  }
+
   private listPlaylists() : Promise<any> {
     return new Promise<any>(function (resolve, reject) {
       gapi.client.youtube.playlists.list({
@@ -42,6 +49,28 @@ export class ImportFromYoutubeService {
         console.error('ERROR Import');
         reject('NOT_FOUND');
       });
+    });
+  }
+
+  private getSongsByPlaylistId(playlistId: string): Promise<any> {
+    return new Promise<any>(function (resolve, reject) {
+      gapi.client.youtube.playlistItems.list({
+        'playlistId': playlistId,
+        'part': 'snippet, contentDetails',
+        'maxResults': 25
+      })
+        .then(
+          (res) => {
+            if(res && res.result && res.result.items) {
+              resolve(res.result.items);
+            }
+          },
+          error => console.log("ERROR " + JSON.stringify(error))
+        )
+        .catch(()=> {
+          console.error('ERROR Import');
+          reject('NOT_FOUND');
+        });
     });
   }
 }

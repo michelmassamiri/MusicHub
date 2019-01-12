@@ -1,5 +1,5 @@
 export class Playlist {
-  id: string
+  id: string;
   title: string;
   genre: string;
   link: string;

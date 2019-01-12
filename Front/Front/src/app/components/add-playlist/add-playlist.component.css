@@ -13,7 +13,7 @@ section.add-playlist-background.transparent {
   margin-bottom: 20px;
   padding-bottom: 100px;
   text-align: center;
-  background-image: url("https://photy.org/photocms/files/Bassano_del_Grappa2C_Italy_28Unsplash29.jpg");
+  background-image: url("../../../assets/img/add_playlist.jpg");
   background-size: cover;
   background-position: center center;
   background-repeat: no-repeat;
