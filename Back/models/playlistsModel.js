@@ -67,6 +67,12 @@ playlistsSchema.statics.getUserPlaylists = async function (userId) {
         .exec();
 };
 
+playlistsSchema.statics.getUserPlaylistById = async function (playlistId, userId) {
+  return await this.findOne({user_id: mongoose.Types.ObjectId(userId),
+        _id: mongoose.Types.ObjectId(playlistId)})
+        .exec();
+};
+
 playlistsSchema.statics.deleteUserPlaylist = async function (playlistId, userId) {
     return await this.findOneAndDelete({user_id: mongoose.Types.ObjectId(userId),
         _id: mongoose.Types.ObjectId(playlistId)})
@@ -81,12 +87,12 @@ playlistsSchema.statics.updateUserPlaylist = async function (playlistId, userId,
       .exec();
 };
 
-/* Private functions */
-function updateUserPlaylistByLink(playlist, userId, that){
-    return that.updateOne({ link: playlist.link, user_id: mongoose.Types.ObjectId(userId)},
-        {$set: { title: playlist.title, genre: playlist.genre,
-            thumbnail: playlist.thumbnail, description: playlist.description, nbItems: playlist.nbItems }},
-        {upsert: true}).exec();
+/* Static functions */
+async function updateUserPlaylistByLink(playlist, userId, that){
+    return await that.findOneAndUpdate({ link: playlist.link, user_id: mongoose.Types.ObjectId(userId)},
+        playlist,
+        {upsert: true})
+        .exec();
 }
 
 /* Export Playlist Model and DAO methods */

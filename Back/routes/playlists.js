@@ -4,6 +4,7 @@ const playListController = require('../controllers/playlistController');
 
 router.get('', playListController.getAllPlaylists);
 router.post('', playListController.createPlaylist);
+router.get('/:id', playListController.getPlaylist);
 router.delete('/:id', playListController.deletePlaylist);
 router.put('/:id', playListController.updatePlaylist);
 

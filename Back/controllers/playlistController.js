@@ -36,6 +36,17 @@ exports.createPlaylist = function (req, res, next) {
         .catch((err)=> next(err));
 };
 
+exports.getPlaylist = function (req, res, next) {
+    const userId = req.user.userID;
+    const playlistId = req.params.id;
+
+    Playlist.getUserPlaylistById(playlistId, userId)
+        .then((userPlaylist)=> {
+            res.json(userPlaylist);
+        })
+        .catch((err)=> next(err));
+};
+
 exports.deletePlaylist = function (req, res, next) {
     const userId = req.user.userID;
     const playlistId = req.params.id;
@@ -103,7 +114,7 @@ exports.importFromYoutube = function (req, res, next) {
 async function importPlaylistsFromYoutube(playlists, userId) {
     let userPlaylists = [];
     for(const item of playlists) {
-        let playlist = new Playlist();
+        let playlist = {};
         playlist.title = item.snippet.title;
         playlist.link = 'https://www.youtube.com/playlist?list=' + item.id;
         playlist.thumbnail = item.snippet.thumbnails.high.url;
@@ -113,7 +124,5 @@ async function importPlaylistsFromYoutube(playlists, userId) {
         userPlaylists.push(playlist);
     }
 
-    await Playlist.insertOrUpdateFromYoutube(userPlaylists, userId);
-
-    return userPlaylists;
+    return await Playlist.insertOrUpdateFromYoutube(userPlaylists, userId);
 }
