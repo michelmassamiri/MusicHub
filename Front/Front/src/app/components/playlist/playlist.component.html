@@ -1,0 +1,51 @@
+<div class="card shadow-sm mx-auto playlist-card">
+  <img class="card-img-top" src={{playlist.thumbnail}}
+       alt="Thumbnail [100%x225]" data-holder-rendered="true">
+  <div class="card-body">
+    <div class="card-title">
+      <h4 class="card-title">{{playlist.title}}</h4>
+      <span class="text-muted">{{playlist.genre}}</span>
+    </div>
+
+    <i *ngIf="isYoutubePlaylist(playlist)" class="fa fa-youtube-play fa-2x youtube"></i>
+    <p class="card-text">
+      {{playlist.description}}
+    </p>
+    <div class="d-flex justify-content-between align-items-center">
+      <span class="text-right text-muted">{{playlist.nbItems}} song(s)</span>
+    </div>
+  </div>
+</div>
+
+<div class="button-row">
+    <button *ngIf="isYoutubePlaylist(playlist)" mat-raised-button role="button" class="import-button" (click)="importSongs()">
+      <span>Importez les chansons de cette playlist </span>
+      <i class="fa fa-youtube-play fa-2x youtube"></i>
+    </button>
+</div>
+
+<div class="container">
+  <ng-container *ngIf="songs">
+    <div class="row" *ngFor="let song of songs">
+      <div class="col-sm-6 col-md-6">
+        <button mat-icon-button role="button" title="Ecouter" (click)="playSong(song.link)">
+          <mat-icon>play_circle_outline</mat-icon>
+        </button>
+        <span>{{song.name}}</span>
+        <ng-template *ngIf="song.artist">
+          <span> - </span>
+          <span>{{song.artist}}</span>
+        </ng-template>
+      </div>
+      <div class="col-sm-6 col-md-6 text-center">
+        <button mat-icon-button role="button" title="Supprimer">
+          <mat-icon>delete</mat-icon>
+        </button>
+        <button mat-icon-button role="button" title="Modifier">
+          <mat-icon>create</mat-icon>
+        </button>
+      </div>
+    </div>
+  </ng-container>
+</div>
+
