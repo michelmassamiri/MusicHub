@@ -15,6 +15,7 @@ const corsOptions = {
 const indexRouter = require('./routes/index');
 const usersRouter = require('./routes/users');
 const playlistsRouter = require('./routes/playlists');
+const songsRouter = require('./routes/songs');
 
 const app = express();
 
@@ -41,6 +42,7 @@ const db = mongoose.connection;
 app.use('/auth', indexRouter);
 app.use('/users', usersRouter);
 app.use('/playlists', playlistsRouter);
+app.use('/songs', songsRouter);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
