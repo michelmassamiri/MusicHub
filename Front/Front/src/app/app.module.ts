@@ -26,6 +26,7 @@ import {MatInputModule} from '@angular/material/input';
 import {MatSelectModule} from '@angular/material/select';
 import { FileSelectDirective } from 'ng2-file-upload';
 import { EditPlaylistComponent } from './components/edit-playlist/edit-playlist.component';
+import { PlaylistComponent } from './components/playlist/playlist.component';
 
 @NgModule({
   declarations: [
@@ -36,7 +37,8 @@ import { EditPlaylistComponent } from './components/edit-playlist/edit-playlist.
     HomeComponent,
     AddPlaylistComponent,
     FileSelectDirective,
-    EditPlaylistComponent
+    EditPlaylistComponent,
+    PlaylistComponent
   ],
   imports: [
     CommonModule,
