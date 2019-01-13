@@ -32,16 +32,14 @@
           <mat-icon>play_circle_outline</mat-icon>
         </button>
         <span>{{song.name}}</span>
-        <ng-template *ngIf="song.artist">
-          <span> - </span>
-          <span>{{song.artist}}</span>
-        </ng-template>
+        <span *ngIf="song.artist"> - </span>
+        <span *ngIf="song.artist"> {{song.artist}} </span>
       </div>
       <div class="col-sm-6 col-md-6 text-center">
-        <button mat-icon-button role="button" title="Supprimer">
+        <button mat-icon-button role="button" title="Supprimer" (click)="deleteSong(song.id)">
           <mat-icon>delete</mat-icon>
         </button>
-        <button mat-icon-button role="button" title="Modifier">
+        <button mat-icon-button role="button" title="Modifier" (click)="updateSong(song)">
           <mat-icon>create</mat-icon>
         </button>
       </div>

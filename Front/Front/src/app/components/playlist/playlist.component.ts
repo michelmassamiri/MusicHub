@@ -7,6 +7,9 @@ import {Song} from "../../entity/Song";
 import {SpinnerService} from "../../services/spinner.service";
 import {SongService} from "../../services/song.service";
 import {ToastrService} from "ngx-toastr";
+import {EditPlaylistComponent} from "../edit-playlist/edit-playlist.component";
+import {MatDialog} from "@angular/material";
+import {EditSongComponent} from "../edit-song/edit-song.component";
 
 @Component({
   selector: 'app-playlist',
@@ -23,7 +26,8 @@ export class PlaylistComponent implements OnInit {
     private route: ActivatedRoute,
     private spinnerService: SpinnerService,
     private songService: SongService,
-    private toasterService: ToastrService
+    private toasterService: ToastrService,
+    public dialog: MatDialog
   ) { }
 
   ngOnInit() {
@@ -67,6 +71,53 @@ export class PlaylistComponent implements OnInit {
 
   playSong(link: string) {
     window.open(link, '_blank');
+  }
+
+  deleteSong(songId: string) {
+    this.songService.deleteSongForPlaylist(this.playlist.id, songId)
+      .subscribe(deletedSong => {
+        this.songs = this.songs.filter(item => {
+          return item.id !== deletedSong.id;
+        });
+        this.toasterService.success("la chanson a été bien supprimée", "Chanson supprimée");
+      },
+      err=> {
+        console.error(err);
+        this.toasterService.error("La chanson n'a pas été bien supprimée", "Erreur Serveur");
+      });
+  }
+
+  updateSong(song: Song): void {
+    const dialogRef = this.dialog.open(EditSongComponent, {
+      width: '400px',
+      data: {
+        name: song.name,
+        genre: song.genre,
+        artist: song.artist,
+      }
+    });
+
+    dialogRef.afterClosed().subscribe(result => {
+      if(result) {
+        this.spinnerService.display(true);
+        this.songService.updateSongForPlaylist(this.playlist.id, song.id, result)
+          .subscribe(
+            updatedSong => {
+              this.songs = this.songs.filter(item => {
+                return item.id !== song.id;
+              });
+              this.songs.push(updatedSong);
+              this.spinnerService.display(false);
+              this.toasterService.success('La chanson a été bien modifiée', 'Succès');
+            },
+            err => {
+              this.toasterService.error(
+                'Impossible de modifier la chanson', 'Erreur modification serveur'
+              );
+              this.spinnerService.display(false);
+            });
+      }
+    });
   }
 
   private updateYoutubeSongs(youtubeSongs: Song[]) {
