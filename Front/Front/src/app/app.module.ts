@@ -27,6 +27,7 @@ import {MatSelectModule} from '@angular/material/select';
 import { FileSelectDirective } from 'ng2-file-upload';
 import { EditPlaylistComponent } from './components/edit-playlist/edit-playlist.component';
 import { PlaylistComponent } from './components/playlist/playlist.component';
+import { EditSongComponent } from './components/edit-song/edit-song.component';
 
 @NgModule({
   declarations: [
@@ -38,7 +39,8 @@ import { PlaylistComponent } from './components/playlist/playlist.component';
     AddPlaylistComponent,
     FileSelectDirective,
     EditPlaylistComponent,
-    PlaylistComponent
+    PlaylistComponent,
+    EditSongComponent
   ],
   imports: [
     CommonModule,
@@ -65,7 +67,8 @@ import { PlaylistComponent } from './components/playlist/playlist.component';
     ToastrModule.forRoot() // ToastrModule added
   ],
   entryComponents: [
-    EditPlaylistComponent
+    EditPlaylistComponent,
+    EditSongComponent
   ],
   providers: [
   ],
