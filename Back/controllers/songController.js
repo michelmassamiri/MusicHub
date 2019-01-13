@@ -1,4 +1,5 @@
 Song = require('../models/songsModel');
+playlistController = require('../controllers/playlistController');
 
 /* CRUD methods */
 exports.getAllSongs = function (req, res, next) {
@@ -17,19 +18,76 @@ exports.getAllSongs = function (req, res, next) {
 };
 
 exports.getSong = function (req, res, next) {
+    const userId = req.user.userID;
+    const playlistId = req.query.playlistId;
+    const songId = req.params.id;
 
+    if(!playlistController.userHasPermession(playlistId, userId, next)) {
+        return res.status(403).send(
+            "Unauthorized Access, authenticated user has no such playlist"
+        );
+    }
+
+    Song.getSong(songId)
+        .then((song)=> {
+            res.json(song);
+        })
+        .catch((err)=> next(err));
 };
 
 exports.createSong = function (req, res, next) {
+    const userId = req.user.userID;
+    const playlistId = req.query.playlistId;
+    const song = req.body;
 
+    if(!playlistController.userHasPermession(playlistId, userId, next)) {
+        return res.status(403).send(
+            "Unauthorized Access, authenticated user has no such playlist"
+        );
+    }
+
+    Song.insertSong(song)
+        .then((newSong)=> res.json(newSong))
+        .catch((err)=> next(err));
 };
 
 exports.deleteSong = function (req, res, next) {
+    const userId = req.user.userID;
+    const playlistId = req.query.playlistId;
+    const songId = req.params.id;
 
+    if(!playlistController.userHasPermession(playlistId, userId, next)) {
+        return res.status(403).send(
+            "Unauthorized Access, authenticated user has no such playlist"
+        );
+    }
+
+    Song.deleteSong(songId)
+        .then((deletedSong)=> res.json(deletedSong))
+        .catch((err)=> next(err));
 };
 
 exports.updateSong = function (req, res, next) {
+    const userId = req.user.userID;
+    const playlistId = req.query.playlistId;
+    const songId = req.params.id;
+    const args = req.body;
 
+    if(!playlistController.userHasPermession(playlistId, userId, next)) {
+        return res.status(403).send(
+            "Unauthorized Access, authenticated user has no such playlist"
+        );
+    }
+
+    if(args.id || args._id  || args.link || args.playlist_id) {
+        return res.status(422).send(
+            "Only name, artist or/and genre can be updated"
+        );
+    }
+
+    Song.updateSong(songId, args)
+        .then((updatedSong)=> res.json(updatedSong))
+        .catch((err)=> next(err));
 };
 
 /* Imports */
