@@ -1,0 +1,33 @@
+<h2 mat-dialog-title>
+  Modifier la chanosn
+  <mat-icon>create</mat-icon>
+</h2>
+<mat-dialog-content>
+  <mat-form-field class="inputmodal-playlist">
+    <input [(ngModel)]="data.name" name="name" matInput placeholder="Titre de la chanson">
+  </mat-form-field>
+
+  <mat-form-field class="inputmodal-playlist">
+    <input [(ngModel)]="data.artist" name="artist" matInput placeholder="Artiste">
+  </mat-form-field>
+
+  <mat-form-field class="inputmodal-playlist">
+    <mat-select placeholder="Genre" [(ngModel)]="data.genre" name="genre">
+      <mat-option>Aucune</mat-option>
+      <mat-option *ngFor="let genre of genres" [value]="genre">
+        {{genre}}
+      </mat-option>
+    </mat-select>
+  </mat-form-field>
+</mat-dialog-content>
+<mat-dialog-actions>
+  <button mat-button (click)="close()">
+    Annuler
+    <mat-icon>cancel</mat-icon>
+  </button>
+  <!-- The mat-dialog-close directive optionally accepts a value as a result for the dialog. -->
+  <button mat-button [mat-dialog-close]="data">
+    Modifier
+    <mat-icon>check</mat-icon>
+  </button>
+</mat-dialog-actions>
