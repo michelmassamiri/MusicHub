@@ -87,11 +87,20 @@ playlistsSchema.statics.updateUserPlaylist = async function (playlistId, userId,
       .exec();
 };
 
+playlistsSchema.statics.checkUserPermission = async function (playlistId, userId) {
+    const playlist = await this.findOne({
+        _id: mongoose.Types.ObjectId(playlistId)
+        , user_id: mongoose.Types.ObjectId(userId)
+    }).exec();
+
+    return !!playlist;
+};
+
 /* Static functions */
 async function updateUserPlaylistByLink(playlist, userId, that){
     return await that.findOneAndUpdate({ link: playlist.link, user_id: mongoose.Types.ObjectId(userId)},
         playlist,
-        {upsert: true})
+        {upsert: true, new: true})
         .exec();
 }
 

@@ -111,6 +111,14 @@ exports.importFromYoutube = function (req, res, next) {
     }
 };
 
+exports.userHasPermession = async function (playlistId, userId, next) {
+  await Playlist.checkUserPermission(playlistId, userId)
+      .then((hasPermission)=> {
+          return hasPermission;
+      })
+      .catch((err)=> next(err));
+};
+
 async function importPlaylistsFromYoutube(playlists, userId) {
     let userPlaylists = [];
     for(const item of playlists) {
