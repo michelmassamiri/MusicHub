@@ -18,9 +18,14 @@
 </div>
 
 <div class="button-row">
-    <button *ngIf="isYoutubePlaylist(playlist)" mat-raised-button role="button" class="import-button" (click)="importSongs()">
+    <button *ngIf="isYoutubePlaylist(playlist)" mat-raised-button role="button" class="import-button"
+            (click)="importSongs()">
       <span>Importez les chansons de cette playlist </span>
       <i class="fa fa-youtube-play fa-2x youtube"></i>
+    </button>
+    <button mat-raised-button class="add-songs" (click)="addSongsToPlaylist()">
+      <mat-icon>add</mat-icon>
+      Ajouter des chansons
     </button>
 </div>
 
@@ -34,6 +39,7 @@
         <span>{{song.name}}</span>
         <span *ngIf="song.artist"> - </span>
         <span *ngIf="song.artist"> {{song.artist}} </span>
+        <i *ngIf="isYoutubeSong(song)" class="fa fa-youtube-play youtube youtube-song"></i>
       </div>
       <div class="col-sm-6 col-md-6 text-center">
         <button mat-icon-button role="button" title="Supprimer" (click)="deleteSong(song.id)">

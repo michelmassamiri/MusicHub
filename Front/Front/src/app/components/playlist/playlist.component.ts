@@ -10,6 +10,7 @@ import {ToastrService} from "ngx-toastr";
 import {EditPlaylistComponent} from "../edit-playlist/edit-playlist.component";
 import {MatDialog} from "@angular/material";
 import {EditSongComponent} from "../edit-song/edit-song.component";
+import {AddSongComponent} from "../add-song/add-song.component";
 
 @Component({
   selector: 'app-playlist',
@@ -69,12 +70,16 @@ export class PlaylistComponent implements OnInit {
     return (playlist.link.includes("youtube"));
   }
 
+  public isYoutubeSong(song: Song): boolean {
+    return (song.link.includes("youtube"));
+  }
+
   playSong(link: string) {
     window.open(link, '_blank');
   }
 
   deleteSong(songId: string) {
-    this.songService.deleteSongForPlaylist(this.playlist.id, songId)
+    this.songService.deleteSongForPlaylist(songId)
       .subscribe(deletedSong => {
         this.songs = this.songs.filter(item => {
           return item.id !== deletedSong.id;
@@ -100,7 +105,7 @@ export class PlaylistComponent implements OnInit {
     dialogRef.afterClosed().subscribe(result => {
       if(result) {
         this.spinnerService.display(true);
-        this.songService.updateSongForPlaylist(this.playlist.id, song.id, result)
+        this.songService.updateSongForPlaylist(song.id, result)
           .subscribe(
             updatedSong => {
               this.songs = this.songs.filter(item => {
@@ -118,6 +123,38 @@ export class PlaylistComponent implements OnInit {
             });
       }
     });
+  }
+
+  addSongsToPlaylist() {
+    this.songService.getAllSongsByUser()
+      .subscribe(songs=> {
+        const dialogRef = this.dialog.open(AddSongComponent, {
+          width: '600px',
+          data: {
+            songs: songs,
+            playlistId: this.playlist.id
+          }
+        });
+
+        dialogRef.afterClosed().subscribe(results => {
+          if(results) {
+            this.spinnerService.display(true);
+            this.songService.importAPISongs(results, this.playlist.id)
+              .subscribe(newSongs=> {
+                this.songs = this.songs.concat(newSongs);
+                this.spinnerService.display(false);
+              },
+              err=> {
+                this.spinnerService.display(false);
+                this.toasterService.error("Impossible d'ajouter des chansons", "Erreur serveur");
+              });
+          }
+          this.spinnerService.display(false);
+        });
+      },
+      err=> {
+        this.toasterService.error("Impossible de retrouver les chansons", "Erreur serveur");
+      });
   }
 
   private updateYoutubeSongs(youtubeSongs: Song[]) {
