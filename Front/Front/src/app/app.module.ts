@@ -28,6 +28,7 @@ import { FileSelectDirective } from 'ng2-file-upload';
 import { EditPlaylistComponent } from './components/edit-playlist/edit-playlist.component';
 import { PlaylistComponent } from './components/playlist/playlist.component';
 import { EditSongComponent } from './components/edit-song/edit-song.component';
+import { AddSongComponent } from './components/add-song/add-song.component';
 
 @NgModule({
   declarations: [
@@ -40,7 +41,8 @@ import { EditSongComponent } from './components/edit-song/edit-song.component';
     FileSelectDirective,
     EditPlaylistComponent,
     PlaylistComponent,
-    EditSongComponent
+    EditSongComponent,
+    AddSongComponent
   ],
   imports: [
     CommonModule,
@@ -68,7 +70,8 @@ import { EditSongComponent } from './components/edit-song/edit-song.component';
   ],
   entryComponents: [
     EditPlaylistComponent,
-    EditSongComponent
+    EditSongComponent,
+    AddSongComponent
   ],
   providers: [
   ],
