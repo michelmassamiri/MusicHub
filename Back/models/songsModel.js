@@ -75,6 +75,10 @@ songSchema.statics.getSong = async function (songId) {
   return await this.findOne({_id: mongoose.Types.ObjectId(songId)}).exec();
 };
 
+songSchema.statics.getSongsByUser = async function (playlistsId) {
+   return await this.find({playlist_id: {$in: playlistsId}}).exec();
+};
+
 /* Private functions */
 async function updateSongsByLink(song, playlistId, that){
     return await that.findOneAndUpdate({ link: song.link, playlist_id: mongoose.Types.ObjectId(playlistId)},
