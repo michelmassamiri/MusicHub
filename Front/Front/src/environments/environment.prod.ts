@@ -1,3 +1,4 @@
 export const environment = {
-  production: true
+  production: true,
+  MusicHub_API: 'https://musichubapi.herokuapp.com'
 };
