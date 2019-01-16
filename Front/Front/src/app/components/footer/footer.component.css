@@ -4,4 +4,12 @@ footer {
   background-color: black;
   color: #ff9900;
   margin-top: 25px;
+  bottom: 0;
+  width: 100%;
+}
+
+@media screen and (min-height: 890px) {
+  footer {
+    position: absolute;
+  }
 }

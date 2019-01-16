@@ -16,9 +16,9 @@ let headers = new HttpHeaders({
   providedIn: 'root',
 })
 export class LoginService {
-  private googleAuthUrl = MUSICHUB_API + AUTH_GOOGLE_URI;
-  private currentUserSubject: BehaviorSubject<User>;
-  private currentUser: Observable<User>;
+  public googleAuthUrl = MUSICHUB_API + AUTH_GOOGLE_URI;
+  public currentUserSubject: BehaviorSubject<User>;
+  public currentUser: Observable<User>;
 
   constructor(
     private http: HttpClient,

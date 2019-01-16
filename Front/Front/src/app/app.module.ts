@@ -17,14 +17,14 @@ import {HttpClientModule} from "@angular/common/http";
 import {JwtModule} from "@auth0/angular-jwt";
 import { ToastrModule } from 'ngx-toastr';
 import {
-  MatButtonModule, MatDialog, MatDialogModule, MatDialogRef, MatIconModule,
+  MatButtonModule, MatDialogModule, MatIconModule,
   MatMenuModule
 } from "@angular/material";
 import {MatProgressSpinnerModule} from '@angular/material/progress-spinner';
 import {MatFormFieldModule} from '@angular/material/form-field';
 import {MatInputModule} from '@angular/material/input';
 import {MatSelectModule} from '@angular/material/select';
-import { FileSelectDirective } from 'ng2-file-upload';
+import { FileUploadModule } from 'ng2-file-upload';
 import { EditPlaylistComponent } from './components/edit-playlist/edit-playlist.component';
 import { PlaylistComponent } from './components/playlist/playlist.component';
 import { EditSongComponent } from './components/edit-song/edit-song.component';
@@ -38,7 +38,6 @@ import { AddSongComponent } from './components/add-song/add-song.component';
     FooterComponent,
     HomeComponent,
     AddPlaylistComponent,
-    FileSelectDirective,
     EditPlaylistComponent,
     PlaylistComponent,
     EditSongComponent,
@@ -57,6 +56,7 @@ import { AddSongComponent } from './components/add-song/add-song.component';
     BrowserAnimationsModule,
     BrowserModule,
     FormsModule,
+    FileUploadModule,
     AppRoutingModule,
     HttpClientModule,
     JwtModule.forRoot({
