@@ -17,7 +17,8 @@ const playlistsSchema = new mongoose.Schema({
        type: String
    },
    description: {
-       type: String
+       type: String,
+       min: 0
    },
    nbItems: {
        type: Number
@@ -94,6 +95,12 @@ playlistsSchema.statics.checkUserPermission = async function (playlistId, userId
     }).exec();
 
     return !!playlist;
+};
+
+playlistsSchema.statics.updateNbItems = async function (playlistId, nbItems) {
+    return await this.findOneAndUpdate({_id: mongoose.Types.ObjectId(playlistId)},
+        {$inc: {nbItems: nbItems}})
+        .exec();
 };
 
 /* Static functions */

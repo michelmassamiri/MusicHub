@@ -20,6 +20,9 @@ exports.getAllPlaylists = function (req, res, next) {
 
     Playlist.getUserPlaylists(userId)
         .then((userPlaylists)=> {
+            if(!userPlaylists) {
+                return res.status(404).send({error: {status: 404, message: "No playlists were found"}});
+            }
             res.json(userPlaylists);
         })
         .catch((err)=> next(err));
@@ -40,8 +43,17 @@ exports.getPlaylist = function (req, res, next) {
     const userId = req.user.userID;
     const playlistId = req.params.id;
 
+    if(!checkUserPermission(playlistId, userId, next)) {
+        return res.status(403).send({
+            error: {status: 403, message: "Unauthorized Access, authenticated user has no such playlist"}
+        });
+    }
+
     Playlist.getUserPlaylistById(playlistId, userId)
         .then((userPlaylist)=> {
+            if(!userPlaylist) {
+                return res.status(404).send({error: {status: 404, message: "Playlist wes found"}});
+            }
             res.json(userPlaylist);
         })
         .catch((err)=> next(err));
@@ -51,8 +63,18 @@ exports.deletePlaylist = function (req, res, next) {
     const userId = req.user.userID;
     const playlistId = req.params.id;
 
+    if(!checkUserPermission(playlistId, userId, next)) {
+        return res.status(403).send({
+            error: {status: 403, message: "Unauthorized Access, authenticated user has no such playlist"}
+        });
+    }
+
     Playlist.deleteUserPlaylist(playlistId, userId)
         .then((deletedPlaylist)=> {
+            if(!deletedPlaylist) {
+                return res.status(404).send({error: {status: 404, message: "Playlist wes found"}});
+            }
+
             res.json(deletedPlaylist);
         })
         .catch((err) => next(err));
@@ -63,12 +85,21 @@ exports.updatePlaylist = function (req, res, next) {
   const playlistId = req.params.id;
   const args = req.body;
 
+  if(!checkUserPermission(playlistId, userId, next)) {
+      return res.status(403).send({
+          error: {status: 403, message: "Unauthorized Access, authenticated user has no such playlist"}
+      });
+  }
+
   if(args.user_id || args.id || args._id || args.link || args.thumbnail || args.nbItems) {
       return res.status(422).send("Only title, description or/and genre can be updated");
   }
 
   Playlist.updateUserPlaylist(playlistId, userId, args)
       .then((updatedPlaylist)=> {
+          if(!updatedPlaylist) {
+              return res.status(404).send({error: {status: 404, message: "Playlist wes found"}});
+          }
           res.json(updatedPlaylist);
       })
       .catch((err) => next(err));
@@ -111,13 +142,23 @@ exports.importFromYoutube = function (req, res, next) {
     }
 };
 
-exports.userHasPermession = async function (playlistId, userId, next) {
-  await Playlist.checkUserPermission(playlistId, userId)
-      .then((hasPermission)=> {
-          return hasPermission;
+exports.userHasPermession = checkUserPermission;
+
+exports.updatePlaylistNbItems = function (playlistId, nbItems, next) {
+  Playlist.updateNbItems(playlistId, nbItems)
+      .then((success)=> {
+          return 0;
       })
       .catch((err)=> next(err));
 };
+
+async function checkUserPermission (playlistId, userId, next) {
+    await Playlist.checkUserPermission(playlistId, userId)
+        .then((hasPermission) => {
+            return hasPermission;
+        })
+        .catch((err) => next(err));
+}
 
 async function importPlaylistsFromYoutube(playlists, userId) {
     let userPlaylists = [];

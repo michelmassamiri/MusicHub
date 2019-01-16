@@ -71,7 +71,10 @@ exports.createSong = function (req, res, next) {
     }
 
     Song.insertSong(song)
-        .then((newSong)=> res.json(newSong))
+        .then((newSong)=> {
+            playlistController.updatePlaylistNbItems(newSong.playlist_id, 1, next);
+            res.json(newSong)
+        })
         .catch((err)=> next(err));
 };
 
@@ -91,7 +94,10 @@ exports.deleteSong = function (req, res, next) {
             }
 
             Song.deleteSong(songId)
-                .then((deletedSong)=> res.json(deletedSong))
+                .then((deletedSong)=> {
+                    playlistController.updatePlaylistNbItems(deletedSong.playlist_id, -1, next);
+                    res.json(deletedSong)
+                })
                 .catch((err)=> next(err));
         })
         .catch((err)=>  {
@@ -155,6 +161,8 @@ exports.importFromYoutube = function (req, res, next) {
 
     buildFromYoutube(songs, playlistId)
         .then((importedSongs)=> {
+            if(importedSongs)
+                playlistController.updatePlaylistNbItems(playlistId, importedSongs.length, next);
             res.json(importedSongs);
         })
         .catch((err)=> next(err));
@@ -185,7 +193,12 @@ exports.importFromAPI = function (req, res, next) {
         item.playlist_id = playlistId;
     }
     Song.insertMany(songs)
-        .then((docs)=> res.json(docs))
+        .then((docs)=>  {
+            if(docs)
+                playlistController.updatePlaylistNbItems(playlistId, docs.length, next);
+
+            res.json(docs)
+        })
         .catch((err)=> next(err));
 };
 
