@@ -136,14 +136,21 @@ exports.importFromYoutube = function (req, res, next) {
     const playlistId = req.query.playlistId;
     const songs = req.body;
     if (!playlistId){
-        return res.status(400).send(
-            "Playlist's ID is required in the request parameters, playlistId parameter was not found"
-        );
+        return res.status(400).send({
+            error: {
+                status: 400,
+                message: "Playlist's ID is required in the request parameters, playlistId parameter was not found"
+            }
+        });
     }
     if(!songs || !Array.isArray(songs)){
-        return res.status(400).send(
-            "Request's body is undefined or request's body is not an array, request's body must be an array"
-        );
+        return res.status(400).send({
+            error: {
+                status: 400,
+                message:
+                    "Request's body is undefined or request's body is not an array, request's body must be an array"
+            }
+        });
     }
 
     buildFromYoutube(songs, playlistId)
@@ -157,14 +164,21 @@ exports.importFromAPI = function (req, res, next) {
     const playlistId = req.query.playlistId;
     const songs = req.body;
     if (!playlistId){
-        return res.status(400).send(
-            "Playlist's ID is required in the request parameters, playlistId parameter was not found"
-        );
+        return res.status(400).send({
+            error: {
+                status: 400,
+                message: "Playlist's ID is required in the request parameters, playlistId parameter was not found"
+            }
+        });
     }
     if(!songs || !Array.isArray(songs)){
-        return res.status(400).send(
-            "Request's body is undefined or request's body is not an array, request's body must be an array"
-        );
+        return res.status(400).send({
+            error: {
+                status: 400,
+                message:
+                    "Request's body is undefined or request's body is not an array, request's body must be an array"
+            }
+        });
     }
 
     for(let item of songs) {
