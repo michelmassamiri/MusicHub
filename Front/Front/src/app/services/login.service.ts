@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import {HttpClient, HttpErrorResponse, HttpHeaders, HttpResponse} from '@angular/common/http';
-import {catchError, tap} from "rxjs/internal/operators";
-import {BehaviorSubject, Observable, of, throwError} from "rxjs/index";
+import {catchError, tap} from "rxjs/operators";
+import {BehaviorSubject, Observable, of, throwError} from "rxjs";
 
 import {AUTH_GOOGLE_URI, MUSICHUB_API} from "../../consts";
 import {User} from "../entity/User";

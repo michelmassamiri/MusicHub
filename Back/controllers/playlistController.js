@@ -16,7 +16,7 @@ let upload = multer({storage: storage}).single('file');
 
 /* CRUD Methods */
 exports.getAllPlaylists = function (req, res, next) {
-    const userId = req.user.userID;
+    const userId = req.auth.userID;
 
     Playlist.getUserPlaylists(userId)
         .then((userPlaylists)=> {
@@ -29,7 +29,7 @@ exports.getAllPlaylists = function (req, res, next) {
 };
 
 exports.createPlaylist = function (req, res, next) {
-    const userId = req.user.userID;
+    const userId = req.auth.userID;
     const playlist = req.body;
 
     Playlist.insertPlaylist(playlist, userId)
@@ -40,7 +40,7 @@ exports.createPlaylist = function (req, res, next) {
 };
 
 exports.getPlaylist = function (req, res, next) {
-    const userId = req.user.userID;
+    const userId = req.auth.userID;
     const playlistId = req.params.id;
 
     if(!checkUserPermission(playlistId, userId, next)) {
@@ -60,7 +60,7 @@ exports.getPlaylist = function (req, res, next) {
 };
 
 exports.deletePlaylist = function (req, res, next) {
-    const userId = req.user.userID;
+    const userId = req.auth.userID;
     const playlistId = req.params.id;
 
     if(!checkUserPermission(playlistId, userId, next)) {
@@ -81,7 +81,7 @@ exports.deletePlaylist = function (req, res, next) {
 };
 
 exports.updatePlaylist = function (req, res, next) {
-  const userId = req.user.userID;
+  const userId = req.auth.userID;
   const playlistId = req.params.id;
   const args = req.body;
 
@@ -117,7 +117,7 @@ exports.uploadThumbnail = function (req, res, next) {
 };
 
 exports.importFromYoutube = function (req, res, next) {
-    const userId = req.user.userID;
+    const userId = req.auth.userID;
     const playlists = req.body;
     if(Array.isArray(playlists)) {
         importPlaylistsFromYoutube(playlists, userId)

@@ -57,32 +57,32 @@ playlistsSchema.statics.insertPlaylist = async function (playlist, userId) {
         thumbnail: playlist.thumbnail,
         description: playlist.description,
         nbItems: playlist.nbItems,
-        user_id: mongoose.Types.ObjectId(userId)
+        user_id: new mongoose.Types.ObjectId(userId)
     });
 
     return await playlistToInsert.save()
 };
 
 playlistsSchema.statics.getUserPlaylists = async function (userId) {
-    return await this.find({user_id:  mongoose.Types.ObjectId(userId)})
+    return await this.find({user_id: new mongoose.Types.ObjectId(userId)})
         .exec();
 };
 
 playlistsSchema.statics.getUserPlaylistById = async function (playlistId, userId) {
-  return await this.findOne({user_id: mongoose.Types.ObjectId(userId),
-        _id: mongoose.Types.ObjectId(playlistId)})
+  return await this.findOne({user_id: new mongoose.Types.ObjectId(userId),
+        _id: new mongoose.Types.ObjectId(playlistId)})
         .exec();
 };
 
 playlistsSchema.statics.deleteUserPlaylist = async function (playlistId, userId) {
-    return await this.findOneAndDelete({user_id: mongoose.Types.ObjectId(userId),
-        _id: mongoose.Types.ObjectId(playlistId)})
+    return await this.findOneAndDelete({user_id: new mongoose.Types.ObjectId(userId),
+        _id: new mongoose.Types.ObjectId(playlistId)})
         .exec();
 };
 
 playlistsSchema.statics.updateUserPlaylist = async function (playlistId, userId, playlist) {
-  return await this.findOneAndUpdate({user_id: mongoose.Types.ObjectId(userId),
-      _id: mongoose.Types.ObjectId(playlistId)},
+  return await this.findOneAndUpdate({user_id: new mongoose.Types.ObjectId(userId),
+      _id: new mongoose.Types.ObjectId(playlistId)},
       playlist,
       {new: true})
       .exec();
@@ -90,22 +90,22 @@ playlistsSchema.statics.updateUserPlaylist = async function (playlistId, userId,
 
 playlistsSchema.statics.checkUserPermission = async function (playlistId, userId) {
     const playlist = await this.findOne({
-        _id: mongoose.Types.ObjectId(playlistId)
-        , user_id: mongoose.Types.ObjectId(userId)
+        _id: new mongoose.Types.ObjectId(playlistId)
+        , user_id: new mongoose.Types.ObjectId(userId)
     }).exec();
 
     return !!playlist;
 };
 
 playlistsSchema.statics.updateNbItems = async function (playlistId, nbItems) {
-    return await this.findOneAndUpdate({_id: mongoose.Types.ObjectId(playlistId)},
+    return await this.findOneAndUpdate({_id: new mongoose.Types.ObjectId(playlistId)},
         {$inc: {nbItems: nbItems}})
         .exec();
 };
 
 /* Static functions */
 async function updateUserPlaylistByLink(playlist, userId, that){
-    return await that.findOneAndUpdate({ link: playlist.link, user_id: mongoose.Types.ObjectId(userId)},
+    return await that.findOneAndUpdate({ link: playlist.link, user_id: new mongoose.Types.ObjectId(userId)},
         playlist,
         {upsert: true, new: true})
         .exec();

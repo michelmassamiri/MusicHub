@@ -1,7 +1,32 @@
-#WebStorm
-Back/.idea/
+# WebStorm
+.idea/
 
-#node_modules
-Back/node_modules/
+# Node modules
+node_modules/
 
-#Json package
+# Package lock files (optional - can be committed for consistent builds)
+# package-lock.json
+
+# Build outputs
+dist/
+build/
+tmp/
+out-tsc/
+
+# Coverage
+coverage/
+
+# Environment files with secrets
+.env
+.env.local
+
+# Logs
+*.log
+npm-debug.log*
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# Uploads
+uploads/

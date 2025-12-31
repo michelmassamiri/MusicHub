@@ -1,6 +1,5 @@
 import { Component, OnInit } from '@angular/core';
 import {LoginService} from "../../services/login.service";
-import {isNullOrUndefined} from "util";
 import {Router} from "@angular/router";
 import {Oauth2Service} from "../../services/oauth2.service";
 import { ToastrService } from 'ngx-toastr';
@@ -28,7 +27,7 @@ export class LoginComponent implements OnInit {
         this.loginService.signInWithGoolge(idToken)
           .subscribe(
             resp => {
-              if (isNullOrUndefined(resp)) return;
+              if (resp == null || resp === undefined) return;
               this.router.navigate(['']);
             },
             error => {

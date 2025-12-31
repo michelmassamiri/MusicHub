@@ -5,7 +5,7 @@ import {Playlist} from "../../entity/Playlist";
 import {ActivatedRoute, Router} from "@angular/router";
 import {ToastrService} from "ngx-toastr";
 import {SpinnerService} from "../../services/spinner.service";
-import {MatDialog, MatDialogActions} from "@angular/material";
+import { MatDialog } from "@angular/material/dialog";
 import {EditPlaylistComponent} from "../edit-playlist/edit-playlist.component";
 
 @Component({

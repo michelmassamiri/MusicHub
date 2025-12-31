@@ -5,7 +5,7 @@ playlistController = require('../controllers/playlistController');
 /* CRUD methods */
 exports.getAllSongs = function (req, res, next) {
     const playlistId = req.query.playlistId;
-    const userId = req.user.userID;
+    const userId = req.auth.userID;
     if(playlistId && (!playlistController.userHasPermession(playlistId, userId, next))) {
         return res.status(403).send({
             error: {status: 403, message: "Unauthorized Access, authenticated user has no such playlist"}
@@ -38,7 +38,7 @@ exports.getAllSongs = function (req, res, next) {
 };
 
 exports.getSong = function (req, res, next) {
-    const userId = req.user.userID;
+    const userId = req.auth.userID;
     const songId = req.params.id;
 
     Song.getSong(songId)
@@ -61,7 +61,7 @@ exports.getSong = function (req, res, next) {
 };
 
 exports.createSong = function (req, res, next) {
-    const userId = req.user.userID;
+    const userId = req.auth.userID;
     const song = req.body;
 
     if(!playlistController.userHasPermession(song.playlist_id, userId, next)) {
@@ -79,7 +79,7 @@ exports.createSong = function (req, res, next) {
 };
 
 exports.deleteSong = function (req, res, next) {
-    const userId = req.user.userID;
+    const userId = req.auth.userID;
     const songId = req.params.id;
 
     Song.getSong(songId)
@@ -107,7 +107,7 @@ exports.deleteSong = function (req, res, next) {
 };
 
 exports.updateSong = function (req, res, next) {
-    const userId = req.user.userID;
+    const userId = req.auth.userID;
     const songId = req.params.id;
     const args = req.body;
 
