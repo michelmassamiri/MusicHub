@@ -17,7 +17,7 @@ export class AddPlaylistComponent implements OnInit {
   genres: string[] = ['Pop', 'Rock', 'Jazz', 'Latino', 'R&B', 'Rap', 'HipHop', 'Techno', 'Metal'];
   playlist: Playlist = new Playlist();
   uploader: FileUploader;
-  @ViewChild('selectedPicture', { static: false }) selectedPicture!: ElementRef;
+  @ViewChild('selectedPicture', { static: false }) selectedPicture?: ElementRef;
 
   constructor(
     private playlistService: PlaylistsService,
@@ -58,9 +58,11 @@ export class AddPlaylistComponent implements OnInit {
     this.location.back();
   }
 
-  removePhoto(item) {
+  removePhoto(item: any) {
     this.uploader.removeFromQueue(item);
-    this.selectedPicture.nativeElement.value = '';
+    if (this.selectedPicture?.nativeElement) {
+      this.selectedPicture.nativeElement.value = '';
+    }
   }
 
 }
