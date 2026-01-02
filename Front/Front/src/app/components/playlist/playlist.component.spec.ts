@@ -1,4 +1,6 @@
 import { waitForAsync, ComponentFixture, TestBed } from '@angular/core/testing';
+import { provideHttpClient } from '@angular/common/http';
+import { provideHttpClientTesting } from '@angular/common/http/testing';
 
 import { PlaylistComponent } from './playlist.component';
 
@@ -8,7 +10,11 @@ describe('PlaylistComponent', () => {
 
   beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
-      declarations: [ PlaylistComponent ]
+      declarations: [ PlaylistComponent ],
+      providers: [
+        provideHttpClient(),
+        provideHttpClientTesting()
+      ]
     })
     .compileComponents();
   }));
