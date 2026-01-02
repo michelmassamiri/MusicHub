@@ -1,4 +1,4 @@
-import {Component, OnInit, ViewChild} from '@angular/core';
+import {Component, OnInit, ViewChild, ElementRef} from '@angular/core';
 import {PlaylistsService} from "../../services/playlists.service";
 import {Location} from "@angular/common";
 import {Playlist} from "../../entity/Playlist";
@@ -6,7 +6,7 @@ import {ToastrService} from "ngx-toastr";
 import {Router} from "@angular/router";
 import {MUSICHUB_API, THUMBNAIL_UPLOAD_URI} from "../../../consts";
 import {LoginService} from "../../services/login.service";
-import {FileUploader} from 'ng2-file-upload/ng2-file-upload';
+import {FileUploader} from 'ng2-file-upload';
 
 @Component({
   selector: 'app-add-playlist',
@@ -17,7 +17,7 @@ export class AddPlaylistComponent implements OnInit {
   genres: string[] = ['Pop', 'Rock', 'Jazz', 'Latino', 'R&B', 'Rap', 'HipHop', 'Techno', 'Metal'];
   playlist: Playlist = new Playlist();
   uploader: FileUploader;
-  @ViewChild('selectedPicture') selectedPicture: any;
+  @ViewChild('selectedPicture', { static: false }) selectedPicture?: ElementRef;
 
   constructor(
     private playlistService: PlaylistsService,
@@ -58,9 +58,11 @@ export class AddPlaylistComponent implements OnInit {
     this.location.back();
   }
 
-  removePhoto(item) {
+  removePhoto(item: any) {
     this.uploader.removeFromQueue(item);
-    this.selectedPicture.nativeElement.value = '';
+    if (this.selectedPicture?.nativeElement) {
+      this.selectedPicture.nativeElement.value = '';
+    }
   }
 
 }

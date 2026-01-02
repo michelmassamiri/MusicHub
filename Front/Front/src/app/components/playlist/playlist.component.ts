@@ -8,7 +8,7 @@ import {SpinnerService} from "../../services/spinner.service";
 import {SongService} from "../../services/song.service";
 import {ToastrService} from "ngx-toastr";
 import {EditPlaylistComponent} from "../edit-playlist/edit-playlist.component";
-import {MatDialog} from "@angular/material";
+import { MatDialog } from "@angular/material/dialog";
 import {EditSongComponent} from "../edit-song/edit-song.component";
 import {AddSongComponent} from "../add-song/add-song.component";
 

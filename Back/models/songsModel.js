@@ -54,25 +54,25 @@ songSchema.statics.insertSong = async function (song) {
 };
 
 songSchema.statics.getSongsPlaylist = async function (playlistId) {
-  return await this.find({playlist_id: mongoose.Types.ObjectId(playlistId)})
+  return await this.find({playlist_id: new mongoose.Types.ObjectId(playlistId)})
       .exec();
 };
 
 songSchema.statics.deleteSong = async function (songId) {
   return await this.findOneAndDelete({
-        _id: mongoose.Types.ObjectId(songId)
+        _id: new mongoose.Types.ObjectId(songId)
   }).exec();
 };
 
 songSchema.statics.updateSong = async function (songId, songArgs) {
     return await this.findOneAndUpdate({
-        _id: mongoose.Types.ObjectId(songId)},
+        _id: new mongoose.Types.ObjectId(songId)},
         songArgs, {new: true}
         ).exec();
 };
 
 songSchema.statics.getSong = async function (songId) {
-  return await this.findOne({_id: mongoose.Types.ObjectId(songId)}).exec();
+  return await this.findOne({_id: new mongoose.Types.ObjectId(songId)}).exec();
 };
 
 songSchema.statics.getSongsByUser = async function (playlistsId) {
@@ -81,7 +81,7 @@ songSchema.statics.getSongsByUser = async function (playlistsId) {
 
 /* Private functions */
 async function updateSongsByLink(song, playlistId, that){
-    return await that.findOneAndUpdate({ link: song.link, playlist_id: mongoose.Types.ObjectId(playlistId)},
+    return await that.findOneAndUpdate({ link: song.link, playlist_id: new mongoose.Types.ObjectId(playlistId)},
         song,
         {upsert: true, new: true})
         .exec();

@@ -1,9 +1,9 @@
 import { Injectable } from '@angular/core';
 import {ActivatedRouteSnapshot, Resolve, RouterStateSnapshot} from "@angular/router";
 import {Playlist} from "../entity/Playlist";
-import {Observable, of, throwError} from "rxjs/index";
+import {Observable, of, throwError} from "rxjs";
 import {PlaylistsService} from "../services/playlists.service";
-import {catchError} from "rxjs/internal/operators";
+import {catchError} from "rxjs/operators";
 
 @Injectable({
   providedIn: 'root'

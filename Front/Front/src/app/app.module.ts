@@ -13,17 +13,17 @@ import { AppRoutingModule } from './app-routing.module';
 import {tokenGetter} from "./socialloginConfig";
 import { AddPlaylistComponent } from './components/add-playlist/add-playlist.component';
 
-import {HttpClientModule} from "@angular/common/http";
-import {JwtModule} from "@auth0/angular-jwt";
+import { provideHttpClient, withInterceptorsFromDi } from "@angular/common/http";
+import { JwtModule } from "@auth0/angular-jwt";
 import { ToastrModule } from 'ngx-toastr';
-import {
-  MatButtonModule, MatDialogModule, MatIconModule,
-  MatMenuModule
-} from "@angular/material";
-import {MatProgressSpinnerModule} from '@angular/material/progress-spinner';
-import {MatFormFieldModule} from '@angular/material/form-field';
-import {MatInputModule} from '@angular/material/input';
-import {MatSelectModule} from '@angular/material/select';
+import { MatButtonModule } from "@angular/material/button";
+import { MatDialogModule } from "@angular/material/dialog";
+import { MatIconModule } from "@angular/material/icon";
+import { MatMenuModule } from "@angular/material/menu";
+import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatInputModule } from '@angular/material/input';
+import { MatSelectModule } from '@angular/material/select';
 import { FileUploadModule } from 'ng2-file-upload';
 import { EditPlaylistComponent } from './components/edit-playlist/edit-playlist.component';
 import { PlaylistComponent } from './components/playlist/playlist.component';
@@ -58,22 +58,17 @@ import { AddSongComponent } from './components/add-song/add-song.component';
     FormsModule,
     FileUploadModule,
     AppRoutingModule,
-    HttpClientModule,
     JwtModule.forRoot({
       config: {
         tokenGetter: tokenGetter,
-        whitelistedDomains: ['localhost:3000'],
-        blacklistedRoutes: ['localhost:3000/auth/google']
+        allowedDomains: ['localhost:3000'],
+        disallowedRoutes: ['localhost:3000/auth/google']
       }
     }),
-    ToastrModule.forRoot() // ToastrModule added
-  ],
-  entryComponents: [
-    EditPlaylistComponent,
-    EditSongComponent,
-    AddSongComponent
+    ToastrModule.forRoot()
   ],
   providers: [
+    provideHttpClient(withInterceptorsFromDi())
   ],
   bootstrap: [AppComponent]
 })

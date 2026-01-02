@@ -1,9 +1,9 @@
 import { Injectable } from '@angular/core';
 import {Playlist} from "../entity/Playlist";
-import {Observable, throwError} from "rxjs/index";
+import {Observable, throwError} from "rxjs";
 import {PlaylistsService} from "../services/playlists.service";
 import {ActivatedRouteSnapshot, Resolve, RouterStateSnapshot} from "@angular/router";
-import {catchError} from "rxjs/internal/operators";
+import {catchError} from "rxjs/operators";
 import {Song} from "../entity/Song";
 import {SongService} from "../services/song.service";
 import {ImportFromYoutubeService} from "../services/import-from-youtube.service";

@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import {LoginService} from "./login.service";
 import {HttpClient} from "@angular/common/http";
-import {Observable} from "rxjs/index";
+import {Observable} from "rxjs";
 import {IMPORTPLAYLIST, PLAYLISTS_URI} from "../../consts";
 import {Playlist} from "../entity/Playlist";
 

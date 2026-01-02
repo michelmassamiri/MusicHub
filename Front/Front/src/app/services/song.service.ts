@@ -1,9 +1,9 @@
 import { Injectable } from '@angular/core';
 import {HttpClient, HttpParams} from "@angular/common/http";
-import {Observable} from "rxjs/index";
+import {Observable} from "rxjs";
 import {Song} from "../entity/Song";
 import {IMPORTSONGS, SONGS_URI} from "../../consts";
-import {map} from "rxjs/internal/operators";
+import {map} from "rxjs/operators";
 
 @Injectable({
   providedIn: 'root'
